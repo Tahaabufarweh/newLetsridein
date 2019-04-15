@@ -1,0 +1,71 @@
+<mat-card>
+  <mat-card-title>{{ 'HOME.TripDetails' | translate }}</mat-card-title>
+  <div class="row">
+    <div class="col-md-6" style="margin-bottom:15px !important">
+      <mat-card >
+        <mat-card-header style="border-left: 6px solid #3F51B5;">
+          <mat-card-title><h4>Driver Information</h4></mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item> <b>{{ 'HOME.Username' | translate }}:</b> &nbsp; <a [routerLink]="['/profile', Trip?.driver?.id ]"> {{ Trip?.driver?.username }}</a> </mat-list-item>
+            <mat-list-item> <b>{{ 'NewTrip.CarModel' | translate }}:</b> &nbsp; {{Trip?.carModel}} </mat-list-item>
+            <mat-list-item> <b> {{ 'NewTrip.CarBrand' | translate }}:</b>&nbsp; {{Trip?.carBrand}} </mat-list-item>
+            <mat-list-item>  <b>{{ 'NewTrip.manufacturingYear' | translate }}:</b> &nbsp; {{Trip?.manufacturingYear}} </mat-list-item>
+            <mat-list-item>   <b>{{ 'NewTrip.CarColor' | translate }}:</b> &nbsp; {{Trip?.carColor}} </mat-list-item>
+            <mat-list-item>   <b> {{ 'HOME.carNo' | translate }}:</b> &nbsp; {{Trip?.carNo}} </mat-list-item>
+            <mat-list-item>   <b>{{ 'HOME.carInfo' | translate }}: </b> &nbsp; {{Trip?.carInfo}} </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-6" style="margin-bottom:15px !important">
+      <mat-card>
+        <mat-card-header style="border-left: 6px solid #3F51B5;">
+          <mat-card-title><h4>Trip Information</h4></mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list-item> <b> {{ 'HOME.fromDest' | translate  }}: </b> &nbsp; {{Trip?.fromDestination}} </mat-list-item>
+          <mat-list-item> <b> {{ 'HOME.toDest' | translate    }}: </b> &nbsp; {{Trip?.toDestination}} </mat-list-item>
+          <mat-list-item> <b> {{ 'HOME.StartTime' | translate }}: </b> &nbsp; ({{Trip?.startTime}}) // ({{Trip?.startDate}}) </mat-list-item>
+          <mat-list-item> <b> {{ 'HOME.ArriveTime' | translate}}: </b> &nbsp;{{Trip?.arriveTime}} </mat-list-item>
+          <mat-list-item> <b> {{ 'HOME.seatsNo' | translate   }}: </b> &nbsp;{{Trip?.seatsNo}} </mat-list-item>
+          <mat-list-item> <b> {{ 'HOME.price' | translate     }}: </b> &nbsp;{{Trip?.price}} </mat-list-item>
+          <mat-list-item> <b> {{ 'HOME.details' | translate   }}: </b> &nbsp;{{Trip?.details}} </mat-list-item>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6" *ngFor="let request of Trip?.tripRequest" style="margin-bottom:15px !important">
+      <mat-card>
+        <mat-card-header>
+          <img mat-card-avatar class="avatar-preview" [src]="request?.passenger.profileImageName ? request?.passenger.profileImageName : 'DemoPic.png'" />
+          <mat-card-title><a [routerLink]="['/profile',request.passenger.id ]">{{request.passenger.username}}</a></mat-card-title>
+          <mat-card-subtitle>{{ 'HOME.RequestedOn' | translate }} {{request.requestDate | date}}</mat-card-subtitle>
+
+        </mat-card-header>
+
+        <mat-card-content>
+          <p>
+            {{request.passengerNote}}
+          </p>
+          <mat-divider></mat-divider>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" *ngIf="request.status == 2" disabled> {{ 'HOME.Approved' | translate }}</button>
+          <button mat-raised-button color="primary" *ngIf="request.status == 3" disabled> {{ 'HOME.Reject' | translate }}</button>
+
+          <div *ngIf="request.status == 1 && Trip?.driver?.id == authService.getLoggedInUserId()">
+            <button mat-raised-button color="primary" (click)="acceptOrReject(request.id, 2)">{{ 'HOME.accept' | translate }}</button>
+            <button mat-raised-button color="primary" (click)="acceptOrReject(request.id, 3)">{{ 'HOME.reject' | translate }}</button>
+          </div>
+          <button mat-raised-button color="primary" (click)="deleteRequest(request.id)" *ngIf="request.passengerId == authService.getLoggedInUserId()">{{ 'HOME.Delete' | translate }}</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <button *ngIf="Trip?.driverId != authService.getLoggedInUserId()" class="btn btn-danger btn-round m-2" mat-raised-button color="primary" (click)="openRideDialog()">{{ 'HOME.rideButton' | translate }}</button>
+</mat-card>
