@@ -27,7 +27,8 @@ export class TripDetailsComponent implements OnInit
               private router: ActivatedRoute,
               public authService: AuthService,
               public dialog: MatDialog,
-              private deviceService: DeviceDetectorService,
+    private deviceService: DeviceDetectorService,
+    private requestService: TripRequestService, 
               private tripService: TripsService,
                private rideService: TripRequestService) {
 
@@ -79,5 +80,30 @@ export class TripDetailsComponent implements OnInit
 
     });
 
+  }
+
+  deleteRequest(requestId, status) {
+    console.log(requestId);
+    this.requestService.deleteRequest(requestId).subscribe(response => {
+
+      this.tripRequests = Array(response);
+      console.log("success")
+
+    }, error => {
+      console.log("failed")
+    });;
+  }
+
+  acceptOrReject(requestId, status) {
+    console.log(requestId);
+    this.requestService.AcceptOrApproveRequest(requestId, status).subscribe(response => {
+      this.tripRequests = response;
+
+
+
+      console.log("success", this.tripRequests)
+    }, error => {
+      console.log(error)
+    });
   }
 }

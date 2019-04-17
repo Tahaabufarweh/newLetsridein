@@ -103,7 +103,8 @@
         {
             var totalItems = _context.User.Count();
                    
-           var user = _context.User.Where(x => (string.IsNullOrEmpty(username) || x.Username.Contains(username))).OrderByDescending(x => x.Username).Skip((PageNo - 1) * PageSize).Take(PageSize)
+           var user = _context.User.Where(x => (string.IsNullOrEmpty(username) || x.Username.Contains(username))).OrderByDescending(x => x.Username).Skip((PageNo - 1) * PageSize)
+                                                            .Take(PageSize)
                                                             .ToList();
             
            

@@ -27,11 +27,13 @@
           <div class="text-right">
             <button mat-raised-button color="primary" matStepperNext [disabled]="fromDestination.invalid || toDestination.invalid"> {{ 'HOME.nextButton' | translate }}</button>
           </div>
-
+          <div class="col-md-12 text-danger">
+           * Don't choose from the list if want to keep your text you have typed.
+          </div>
         </mat-step>
         <mat-step>
 
-          <ng-template matStepLabel>   {{ 'HOME.completeTrip' | translate }}</ng-template>
+          <ng-template matStepLabel>{{ 'HOME.completeTrip' | translate }}</ng-template>
           <br />
           <div class="row">
             <div class="col-md-6">
@@ -43,7 +45,7 @@
             </div>
             <div class="col-md-6">
               <mat-form-field class="col-md-12">
-                <input matInput type="time" atp-time-picker  placeholder="{{ 'HOME.StartTime' | translate }}" formControlName="StartTime">
+                <input matInput type="text" atp-time-picker  placeholder="{{ 'HOME.StartTime' | translate }}" formControlName="StartTime">
             
               </mat-form-field>
             </div>
@@ -117,7 +119,7 @@
             </div>
             <div class="col-md-2">
               <mat-form-field class="col-md-12">
-                <input matInput placeholder="{{ 'HOME.seatsNo' | translate }}" formControlName="seatsNo">
+                <input matInput type="number" placeholder="{{ 'HOME.seatsNo' | translate }}" formControlName="seatsNo">
                 <!--<mat-hint>For free rides type '0' in this field or leave it empty </mat-hint>-->
                 <mat-error *ngIf="seatsNo.touched && seatsNo.invalid">
                   {{ 'HOME.seatsNorequired' | translate }}

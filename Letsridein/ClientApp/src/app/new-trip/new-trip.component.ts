@@ -53,7 +53,7 @@ export class NewTripComponent {
   TripsForm = new FormGroup({
     fromDestination: new FormControl('', Validators.required),
     toDestination: new FormControl('', Validators.required),
-    StartTime: new FormControl(''),
+    StartTime: new FormControl('', Validators.pattern("^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$")),
     StartDate: new FormControl('', Validators.required),
     ExpectedArrivalTime: new FormControl(new Date()),
     Details: new FormControl(''),
@@ -64,7 +64,7 @@ export class NewTripComponent {
     manufacturingYear: new FormControl(),
     CarInfo: new FormControl('', Validators.required),
     Price: new FormControl(0, Validators.min(0)),
-    seatsNo: new FormControl(0, Validators.required),
+    seatsNo: new FormControl(0, Validators.min(1)),
     carNo: new FormControl('', Validators.required),
     driverId: new FormControl(0),
     isSmoker: new FormControl(),
