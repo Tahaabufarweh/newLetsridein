@@ -53,7 +53,7 @@ export class NewTripComponent {
   TripsForm = new FormGroup({
     fromDestination: new FormControl('', Validators.required),
     toDestination: new FormControl('', Validators.required),
-    StartTime: new FormControl('', Validators.pattern("^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$")),
+    StartTime: new FormControl('', [Validators.pattern("^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$"), Validators.required]),
     StartDate: new FormControl('', Validators.required),
     ExpectedArrivalTime: new FormControl(new Date()),
     Details: new FormControl(''),

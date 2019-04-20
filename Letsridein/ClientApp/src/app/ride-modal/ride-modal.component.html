@@ -11,6 +11,6 @@
 </form>
 
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close color="primary">{{ 'HOME.Cancel' | translate }}</button>
+  <button mat-button color="primary" (click)="onNoClick()">{{ 'HOME.Cancel' | translate }}</button>
   <button mat-button color="primary" (click)="createnewRide()">{{ 'HOME.submit' | translate }}</button>
 </mat-dialog-actions>

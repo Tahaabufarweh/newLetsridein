@@ -42,6 +42,11 @@ export class RideModalComponent implements OnInit {
   get passengerNote() {
     return this.rideForm.get('passengerNote') as FormControl;
   }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
   createnewRide() {
     let date = new Date();
     this.rideForm.setValue({

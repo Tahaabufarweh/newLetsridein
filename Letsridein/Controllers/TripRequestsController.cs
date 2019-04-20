@@ -36,7 +36,7 @@ namespace Letsridein.Controllers
             var request = _context.TripRequest.FirstOrDefault(x => x.Id == id);
             _context.Remove(request);
             _context.SaveChanges();
-            return Ok();
+            return Ok(_context.TripRequest.Where(x=>x.TripId == id).ToList());
         }
         [HttpGet]
         [Route("ApproveOrRejectRequest/{id}/{Status}")]

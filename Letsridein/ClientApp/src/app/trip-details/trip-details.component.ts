@@ -20,7 +20,7 @@ export class TripDetailsComponent implements OnInit
   isMobile;
   isDesktopDevice;
   public Trip;
-  public tripRequests: Array<any> = [];
+  public tripRequests;
   RideDialogRef: MatDialogRef<RideModalComponent>;
   constructor(public translate: TranslateService,
               private notificationService: NotificationService,
@@ -65,29 +65,31 @@ export class TripDetailsComponent implements OnInit
     this.RideDialogRef.afterClosed().subscribe(data => this.fillTable(data));
   }
 
-  fillTable(ride = {} as FormGroup) {
+  fillTable(ride) {
 
     console.log(ride);
+    if (ride.passengerId) {
+      this.rideService.createRate(ride, Number(this.Trip.id)).subscribe(response => {
+        this.Trip.tripRequest.push(response);
+        this.notificationService.createNotificationService('success', 'Request Success', 'Your request has been sent');
+        console.log("success");
 
-    this.rideService.createRate(ride, Number(this.Trip.id)).subscribe(response => {
-      this.tripRequests.push(response);
-      this.notificationService.createNotificationService('success', 'Request Success', 'Your request has been sent');
-      console.log("success");
-      
-    }, error => {
-      this.notificationService.createNotificationService('error', 'Request Faile', error.error);
-      console.log("failed");
+      }, error => {
+        this.notificationService.createNotificationService('error', 'Request Failed', error.error);
+        console.log("failed");
 
-    });
+      });
 
+    }
+    
   }
 
   deleteRequest(requestId, status) {
     console.log(requestId);
     this.requestService.deleteRequest(requestId).subscribe(response => {
 
-      this.tripRequests = Array(response);
-      console.log("success")
+      this.Trip.tripRequest = response;
+      console.log("Deleted Successfully")
 
     }, error => {
       console.log("failed")
@@ -97,7 +99,7 @@ export class TripDetailsComponent implements OnInit
   acceptOrReject(requestId, status) {
     console.log(requestId);
     this.requestService.AcceptOrApproveRequest(requestId, status).subscribe(response => {
-      this.tripRequests = response;
+      this.Trip.tripRequest = response;
 
 
 

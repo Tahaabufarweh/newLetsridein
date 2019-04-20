@@ -36,10 +36,13 @@ namespace Letsridein.Controllers
         [Route("CreateNewTrip")]
         public async Task<IActionResult> CreateNewTrip([FromBody]Trip trip)
         {
+            
             try
             {
                 trip.Status = (int)TripStatus.Opened;
                 trip.IsArrived = false;
+                string time = TimeSpan.Parse(trip.StartTime).ToString();
+                string vs = time;
                 _context.Trip.Add(trip);
                 await _context.SaveChangesAsync();
             }
