@@ -37,6 +37,7 @@ export class TripsComponent implements OnInit {
     public authService: AuthService,
     private router: Router,
     private rideService: TripRequestService,
+    private inter: InternationalizationService,
     private notificationService: NotificationService,
     private adminService: AdminService)
   {
@@ -70,7 +71,7 @@ export class TripsComponent implements OnInit {
 
    
   }
-
+  
   navigateToDetails(id)
   {
     this.router.navigate(["/trip-details/" + id]);
@@ -79,13 +80,26 @@ export class TripsComponent implements OnInit {
     this.RideDialogRef = this.dialog.open(RideModalComponent);
     this.RideDialogRef.afterClosed().subscribe(data => this.fillRide(data, id));
   }
+  title;
+  body;
   fillRide(ride = {} as FormGroup ,tripid) {
 
     console.log(ride);
 
     this.rideService.createRate(ride, Number(tripid)).subscribe(response => {
-
-      this.notificationService.createNotificationService('success', 'Request Success', 'Your request has been sent');
+      if (this.inter.getLanguage() == 'ar') {
+        this.title = 'تم ارسال الطلب'
+        this.body = 'تم ارسال طلبك بنجاح'
+      }
+      if (this.inter.getLanguage() == 'fr') {
+        this.title = "Demande de succès"
+        this.body = 'Votre demande à été envoyé'
+      }
+      if (this.inter.getLanguage() == 'en') {
+        this.title = "Request Success"
+        this.body = 'Your request has been sent'
+      }
+      this.notificationService.createNotificationService('success', this.title, this.body);
       console.log("success");
 
     }, error => {
@@ -110,3 +124,4 @@ export class TripsComponent implements OnInit {
   }
     
 }
+

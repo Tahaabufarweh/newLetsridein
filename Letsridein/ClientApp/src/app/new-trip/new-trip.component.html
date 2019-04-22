@@ -9,27 +9,35 @@
         <mat-step>
 
           <ng-template matStepLabel>{{ 'HOME.startTrip' | translate }}</ng-template>
-          <mat-form-field class="col-md-6">
+          <div class="row">
+            <mat-form-field class="col-md-6">
 
-            <input matInput ngx-google-places-autocomplete  #placesRef="ngx-places" (onAddressChange)="handleFromAddressChange($event)" placeholder="{{ 'HOME.fromDest' | translate }}" formControlName="fromDestination">
-            <!--<mat-hint><b>Example:</b> exm@abc.com </mat-hint>-->
-            <mat-error *ngIf="fromDestination.touched && fromDestination.invalid">
-              {{ 'HOME.enterPlace' | translate }}
-            </mat-error>
-          </mat-form-field>
+              <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleFromAddressChange($event)" placeholder="{{ 'HOME.fromDest' | translate }}" formControlName="fromDestination">
+              <!--<mat-hint><b>Example:</b> exm@abc.com </mat-hint>-->
+              <mat-error *ngIf="fromDestination.touched && fromDestination.invalid">
+                {{ 'HOME.enterPlace' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
           <br />
-          <mat-form-field class="col-md-6">
-            <input matInput ngx-google-places-autocomplete  #placesRef1="ngx-places" (onAddressChange)="handleToAddressChange($event)" placeholder="{{ 'HOME.toDest' | translate }}" formControlName="toDestination">
-            <mat-error *ngIf="toDestination.touched && toDestination.invalid">
-              {{ 'HOME.enterPlace' | translate }}
-            </mat-error>
-          </mat-form-field>
-          <div class="text-right">
-            <button mat-raised-button color="primary" matStepperNext [disabled]="fromDestination.invalid || toDestination.invalid"> {{ 'HOME.nextButton' | translate }}</button>
-          </div>
-          <div class="col-md-12 text-danger">
-           * Don't choose from the list if want to keep your text you have typed.
-          </div>
+          <div class="row">
+            <mat-form-field class="col-md-6">
+              <input matInput ngx-google-places-autocomplete #placesRef1="ngx-places" (onAddressChange)="handleToAddressChange($event)" placeholder="{{ 'HOME.toDest' | translate }}" formControlName="toDestination">
+              <mat-error *ngIf="toDestination.touched && toDestination.invalid">
+                {{ 'HOME.enterPlace' | translate }}
+              </mat-error>
+            </mat-form-field>
+            </div>
+          <div class="row">
+            <div class="text-right">
+              <button mat-raised-button color="primary" matStepperNext [disabled]="fromDestination.invalid || toDestination.invalid"> {{ 'HOME.nextButton' | translate }}</button>
+            </div>
+            </div>
+          <div class="row">
+            <div class="col-md-6 text-danger">
+              * {{ 'HOME.newTripNote' | translate }}
+            </div>
+            </div>
         </mat-step>
         <mat-step>
 

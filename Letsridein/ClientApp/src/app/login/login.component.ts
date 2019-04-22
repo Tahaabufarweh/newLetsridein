@@ -31,6 +31,7 @@ export class LoginComponent {
               private userService: UserService,
               private socialAuthService: AuthService,
     private router: Router,
+    private inter: InternationalizationService,
     private notificationService: NotificationService 
              ) {
  
@@ -76,7 +77,8 @@ export class LoginComponent {
   }
 
 
-
+  title;
+  body;
   login() {
     this.userService.login(this.loginForm.value).subscribe(response => {
       let token = (<any>response).token;
@@ -84,7 +86,19 @@ export class LoginComponent {
       console.log(token)
       this.router.navigate(["/"]);
     }, error => {
-        this.notificationService.createNotificationService('error', 'Login Failed', 'Username or password is wrong');
+      if (this.inter.getLanguage() == 'ar') {
+        this.title = 'خطأ بالتسجيل'
+        this.body = 'اسم المستخدم او كلمة المرور خطأ'
+      }
+      if (this.inter.getLanguage() == 'fr') {
+        this.title = "Échec de la connexion"
+        this.body = 'Le nom d"utilisateur ou le mot de passe est incorrect'
+      }
+      if (this.inter.getLanguage() == 'en') {
+        this.title = "Login Failed"
+        this.body = 'Username or password is wrong'
+      }
+      this.notificationService.createNotificationService('error', this.title, this.body);
     });
 
    

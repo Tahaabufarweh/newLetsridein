@@ -18,9 +18,11 @@ export class InternationalizationService {
     if (!langToken) {
       localStorage.setItem("lang", 'en')
       this.translate.use('en')
+      return 'ar'
     }
    
     this.translate.use(langToken)
+    return langToken
   }
 
   isRtl() {
