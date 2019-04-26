@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit {
     public authService: AuthService,
     private router: ActivatedRoute,
     private route: Router,
-   
+    private inter: InternationalizationService,
     private profileService: ProfileService,
     private ratingService: RatingService,
     private notificationService: NotificationService) {
@@ -80,14 +80,26 @@ export class ProfileComponent implements OnInit {
     this.ReportDialogRef = this.dialog.open(ReportComponent);
     this.ReportDialogRef.afterClosed().subscribe(data => this.fillReport(data));
   }
-
+  title;
+  body;
   fillTable(rate = {} as FormGroup) {
 
     console.log(rate);
     
     this.ratingService.createRate(rate, Number(this.user.id)).subscribe(response => {
-
-      this.notificationService.createNotificationService('success', 'Rating Success', 'Your rate has been sent');
+      if (this.inter.getLanguage() == 'ar') {
+        this.title = 'تم التقييم بنجاح'
+        this.body = 'تم ارسال تقييمك بنجاح'
+      }
+      if (this.inter.getLanguage() == 'fr') {
+        this.title = "Note de réussite"
+        this.body = 'Votre note a été envoyée'
+      }
+      if (this.inter.getLanguage() == 'en') {
+        this.title = "Rating Success"
+        this.body = 'Your rate has been sent'
+      }
+      this.notificationService.createNotificationService('success', this.title, this.body);
       console.log("success");
     
     }, error => {
@@ -101,8 +113,19 @@ export class ProfileComponent implements OnInit {
     console.log(report);
     console.log(this.user.id);
     this.profileService.createReport(report, Number(this.user.id)).subscribe(response => {
-
-      this.notificationService.createNotificationService('success', 'Report Success', 'Your report has been sent');
+      if (this.inter.getLanguage() == 'ar') {
+        this.title = 'تم الابلاغ بنجاح'
+        this.body = 'تم ارسال ابلاغك بنجاح'
+      }
+      if (this.inter.getLanguage() == 'fr') {
+        this.title = "Signaler le succès"
+        this.body = 'Votre rapport a été envoyé'
+      }
+      if (this.inter.getLanguage() == 'en') {
+        this.title = "Report Success"
+        this.body = 'Your report has been sent'
+      }
+      this.notificationService.createNotificationService('success', this.title, this.body);
       console.log("success");
 
     }, error => {
@@ -117,7 +140,19 @@ export class ProfileComponent implements OnInit {
     console.log(this.user.id);
     this.userService.updateUserInfo(user).subscribe(response => {
       this.user = response;
-      this.notificationService.createNotificationService('success', 'Update Success', 'Your Profile has been Updated Successfully');
+      if (this.inter.getLanguage() == 'ar') {
+        this.title = 'تم التحديث بنجاح'
+        this.body = 'تم تحديث بيانات الشخصية بنجاح'
+      }
+      if (this.inter.getLanguage() == 'fr') {
+        this.title = "Mettre à jour le succès"
+        this.body = 'Votre profil a été mis à jour avec succés'
+      }
+      if (this.inter.getLanguage() == 'en') {
+        this.title = "Update Success"
+        this.body = 'Your Profile has been Updated Successfully'
+      }
+      this.notificationService.createNotificationService('success', this.title, this.body);
       console.log("success");
 
     }, error => {
@@ -151,12 +186,33 @@ export class ProfileComponent implements OnInit {
     console.log(this.url)
     this.profileService.saveProfilePic(this.authService.getLoggedInUserId(), file).subscribe(response => {
       let user;
+      if (this.inter.getLanguage() == 'ar') {
+        this.title = 'تم رفع الصورة'
+        this.body = 'تم رفع الصورة بنجاح'
+      }
+      if (this.inter.getLanguage() == 'fr') {
+        this.title = "Succès de téléchargement"
+        this.body = 'La photo de profil a été téléchargée avec succès'
+      }
+      if (this.inter.getLanguage() == 'en') {
+        this.title = "Uploading Success"
+        this.body = 'Profile picture uploaded successfully'
+      }
       this.notificationService.createNotificationService('success', 'Uploading Success', 'Profile picture uploaded successfully');
       user = response;
       this.user.profileImageName = user.profileImageName;
       console.log(this.user.profileImageName )
     }, error => {
-        this.notificationService.createNotificationService('danger', 'Uploading Error!', 'Error in uploading your profile pic');
+      if (this.inter.getLanguage() == 'ar') {
+        this.body = 'خطأ في تحميل الصورة'
+      }
+      if (this.inter.getLanguage() == 'fr') {
+        this.body = 'Erreur lors du téléchargement de votre photo de profil'
+      }
+      if (this.inter.getLanguage() == 'en') {
+        this.body = 'Error in uploading your profile pic'
+      }
+      this.notificationService.createNotificationService('danger', '', this.body);
 
 
     });

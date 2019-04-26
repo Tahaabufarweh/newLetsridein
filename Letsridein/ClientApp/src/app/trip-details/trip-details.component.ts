@@ -9,6 +9,7 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { FormGroup } from '@angular/forms';
 import { NotificationService } from '../services/notification.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { InternationalizationService } from '../services/internationalization.service';
 @Component({
   selector: 'app-trip-details',
   templateUrl: './trip-details.component.html',
@@ -22,12 +23,12 @@ export class TripDetailsComponent implements OnInit
   public Trip;
   public tripRequests;
   RideDialogRef: MatDialogRef<RideModalComponent>;
-  constructor(
-    public translate: TranslateService,
-    private notificationService: NotificationService,
-    private router: ActivatedRoute,
-    public authService: AuthService,
-    public dialog: MatDialog,
+  constructor(public translate: TranslateService,
+              private notificationService: NotificationService,
+              private router: ActivatedRoute,
+      public authService: AuthService,
+      private inter: InternationalizationService,
+              public dialog: MatDialog,
     private deviceService: DeviceDetectorService,
     private requestService: TripRequestService, 
     private tripService: TripsService,
@@ -66,14 +67,27 @@ export class TripDetailsComponent implements OnInit
     this.RideDialogRef = this.dialog.open(RideModalComponent);
     this.RideDialogRef.afterClosed().subscribe(data => this.fillTable(data));
   }
-
+  title;
+  body;
   fillTable(ride) {
 
     console.log(ride);
     if (ride.passengerId) {
       this.rideService.createRate(ride, Number(this.Trip.id)).subscribe(response => {
+        if (this.inter.getLanguage() == 'ar') {
+          this.title = 'تم ارسال الطلب'
+          this.body = 'تم ارسال طلبك بنجاح'
+        }
+        if (this.inter.getLanguage() == 'fr') {
+          this.title = "Demande de succès"
+          this.body = 'Votre demande à été envoyé'
+        }
+        if (this.inter.getLanguage() == 'en') {
+          this.title = "Request Success"
+          this.body = 'Your request has been sent'
+        }
         this.Trip.tripRequest.push(response);
-        this.notificationService.createNotificationService('success', 'Request Success', 'Your request has been sent');
+        this.notificationService.createNotificationService('success', this.title, this.body);
         console.log("success");
 
       }, error => {

@@ -50,11 +50,12 @@ export class RegisterComponent implements OnInit {
     private translate: TranslateService,
     private userService: UserService,
     private router: Router,
+    private inter: InternationalizationService,
     private socialAuthService: AuthService,
 
     private notificationService: NotificationService) {
     translate.use(localStorage.getItem('lang') ? localStorage.getItem('lang') : 'en');
-
+    
   }
   ngOnInit() {
     
@@ -125,7 +126,8 @@ export class RegisterComponent implements OnInit {
   get rePass() {
     return this.signUpForm.get('rePass') as FormControl;
   }
-  
+  title;  
+  body;
   CreateNewUser() {
     
     let MobileNo = this.filterItemsOfType(this.Country.value) + this.MobileNumber.value;
@@ -133,15 +135,41 @@ export class RegisterComponent implements OnInit {
     this.signUpForm.controls['MobileNumber'].setValue(MobileNo);
     
     this.userService.createUser(this.signUpForm.value).subscribe(response => {
-      
-      this.notificationService.createNotificationService('success', 'Signup Success', 'Your account has been created');
-      this.router.navigate(["/trips"]);
-    
+      if (this.inter.getLanguage() == 'ar')
+      {
+        this.title = 'تم التسجيل'
+        this.body='تم انشاء حسابك بنجاح'
+      }
+      if (this.inter.getLanguage() == 'fr') {
+        this.title = "Succès d'inscription"
+        this.body = 'Votre compte a été créé'
+      }
+      if (this.inter.getLanguage() == 'en') {
+        this.title = "Signup Success"
+        this.body = 'Your account has been created'
+      }
+      this.notificationService.createNotificationService('success', this.title, this.body);
+
+     setTimeout(() => {
+        this.router.navigate(["/"]);
+      }, 5000);
       
     }, error => {
       var errormsg = error.error;
       console.log(error);
-      this.notificationService.createNotificationService('error', 'Signup Failed', errormsg);
+      if (this.inter.getLanguage() == 'ar') {
+        this.title = 'فشل التسجيل'
+        this.body = 'لم تم انشاء حسابك بنجاح يرجى التأكد من جميع الحقول'
+      }
+      if (this.inter.getLanguage() == 'fr') {
+        this.title = "Echec de l'inscription"
+        this.body = 'Votre compte n"a pas été créé veuillez vérifier vos champs'
+      }
+      if (this.inter.getLanguage() == 'en') {
+        this.title = "Signup Failed"
+        this.body = 'Your account has not been created,please check your fields'
+      }
+      this.notificationService.createNotificationService('error', this.title, this.body);
     });
 
    

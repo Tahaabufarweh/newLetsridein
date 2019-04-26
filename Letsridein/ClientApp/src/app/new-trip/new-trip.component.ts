@@ -34,7 +34,7 @@ export class NewTripComponent {
    
     this.toDestination.setValue(address.formatted_address)
   }
-  constructor(public translate: TranslateService, private tripsService: TripsService, public authService: AuthService, private route: Router, private notificationService: NotificationService) {
+  constructor(public translate: TranslateService, private inter: InternationalizationService, private tripsService: TripsService, public authService: AuthService, private route: Router, private notificationService: NotificationService) {
     this.authService.checkLogin();
     translate.use(localStorage.getItem('lang') !== null || localStorage.getItem('lang') !== null ? localStorage.getItem('lang') : 'en');
 
@@ -154,6 +154,8 @@ export class NewTripComponent {
   //setExpectedArrivalTime(event: Date) {
 
   //}
+  title;
+  body;
   submitTrip() {
     
   
@@ -166,10 +168,34 @@ export class NewTripComponent {
     console.log(JSON.stringify(this.TripsForm.value));
     this.tripsService.createNewTrip(this.TripsForm.value).subscribe(response => {
       console.log(response);
-      this.notificationService.createNotificationService('success', 'Trip added', 'Your trip has been added successfully');
+      if (this.inter.getLanguage() == 'ar') {
+        this.title = 'تم التسجيل'
+        this.body = 'تم تسجيل رحلتك بنجاح'
+      }
+      if (this.inter.getLanguage() == 'fr') {
+        this.title = "Succès d'inscription"
+        this.body = 'Votre voyage a été ajouté avec succès'
+      }
+      if (this.inter.getLanguage() == 'en') {
+        this.title = "Trip added"
+        this.body = 'Your trip has been added successfully'
+      }
+      this.notificationService.createNotificationService('success', this.title, this.body);
       this.route.navigate(["/trips"]);
     }, error => {
-        this.notificationService.createNotificationService('danger', 'Erorr!', '');
+      if (this.inter.getLanguage() == 'ar') {
+        this.title = 'لم يتم التسجيل '
+        this.body = 'لم يتم تسجيل رحلتك بنجاح يرجى مراجعة الحقول '
+      }
+      if (this.inter.getLanguage() == 'fr') {
+        this.title = "Pas d'inscription"
+        this.body = 'Votre vol n"a pas été enregistré avec succès.Veuillez vérifier les champs.'
+      }
+      if (this.inter.getLanguage() == 'en') {
+        this.title = "Trip does not added"
+        this.body = 'Your trip has not been added successfully,please check your fields'
+      }
+      this.notificationService.createNotificationService('danger', this.title, this.body);
 
       })
   }
