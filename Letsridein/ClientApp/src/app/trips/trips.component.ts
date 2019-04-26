@@ -80,19 +80,12 @@ export class TripsComponent implements OnInit {
     this.RideDialogRef.afterClosed().subscribe(data => this.fillRide(data, id));
   }
   fillRide(ride = {} as FormGroup ,tripid) {
-
-    console.log(ride);
-
     this.rideService.createRate(ride, Number(tripid)).subscribe(response => {
-
       this.notificationService.createNotificationService('success', 'Request Success', 'Your request has been sent');
       console.log("success");
-
     }, error => {
       console.log("failed");
-
     });
-
   }
 
 

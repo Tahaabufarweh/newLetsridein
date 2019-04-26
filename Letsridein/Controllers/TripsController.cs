@@ -172,14 +172,19 @@ namespace Letsridein.Controllers
         [Route("GetTripsSearch")]
         public async Task<ActionResult<TripsPageModel>> GetTripsSearch([FromBody]FilterTripsResource Search , int PageNo = 1, int PageSize = 10)
         {
-            var totalItems = _context.Trip.Count();
+
+            var totalItems = _context.Trip
+                                     .Where(x=> x.StartDate >= DateTime.Now)
+                                     .Count();
+
             var trip = await _context.Trip.Where(x => (string.IsNullOrEmpty(Search.FromDest) || x.FromDestination.Contains(Search.FromDest))
                                                     && (string.IsNullOrEmpty(Search.ToDest) || x.FromDestination.Contains(Search.ToDest))
                                                     && (Search.StartTime == null || x.StartDate >= Search.StartTime)
                                                     && (Search.PriceMin == null || x.Price >= Search.PriceMin)
-                                                    && (Search.PriceMax == null || x.Price <= Search.PriceMax))
+                                                    && (Search.PriceMax == null || x.Price <= Search.PriceMax)
+                                                    && (x.StartDate >= DateTime.Now))
                                                     .Include(x=>x.Driver)
-                                                    .OrderBy(y => y.StartTime).Skip((PageNo - 1) * PageSize).Take(PageSize)
+                                                    .OrderBy(y => y.StartDate).Skip((PageNo - 1) * PageSize).Take(PageSize)
                                                     .ToListAsync();
 
             if (trip == null)

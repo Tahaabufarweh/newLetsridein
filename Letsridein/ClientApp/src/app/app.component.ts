@@ -7,6 +7,7 @@ import { NotificationService } from './services/notification.service';
 import { interval, Subscription } from 'rxjs';
 import { error } from '@angular/compiler/src/util';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { AdminService } from './services/admin.service';
 declare interface RouteInfo {
   path: string;
   title: string;
@@ -28,6 +29,7 @@ export const ROUTES: RouteInfo[] = [
 export class AppComponent implements OnInit {
   deviceInfo = null;
   isMobile;
+  isAdmin;
   isDesktopDevice;
   epicFunction() {
     console.log('hello Home component');
@@ -48,8 +50,11 @@ export class AppComponent implements OnInit {
     public authService: AuthService,
     private deviceService: DeviceDetectorService,
     private router: Router,
-    private langService: InternationalizationService, private notificationService: NotificationService) {
-
+    private langService: InternationalizationService,
+    private notificationService: NotificationService,
+    private adminService: AdminService
+  ) {
+   
     this.langService.getLanguage()
     this.authService.checkLogin();
     this.epicFunction();
@@ -62,6 +67,9 @@ export class AppComponent implements OnInit {
     return false;
   }
   ngOnInit() {
+    if (this.authService.isLoggedin() && this.authService.getLoggedInUserId() == 1) {
+      this.isAdmin = true;
+    }
     this.getUserNotifications()
     const source = interval(1000 * 60);
     this.menuItems = ROUTES.filter(menuItem => menuItem);

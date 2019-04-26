@@ -69,8 +69,83 @@
                 return CreatedAtAction("GetUser", new { id = NewUser.Id }, NewUser);
             }
         }
+        /// <seealso cref="https://www.youtube.com/watch?v=6cV1ei-U3sI&list=RDoTLmXyjOobw&index=2"/>
+        /// <summary>
+        /// Create New User 
+        /// </summary>
+        /// <param name="NewUser"></param>
+        /// <returns>user </returns>
+        [HttpPost]
+        [Route("SocialMediaSignup")]
+        public ActionResult SocialMediaSignup([FromBody] SocialMediaLoginModel NewUser)
+        {
+            try
+            {
+                User user = new User();
+                AuthenticationProvider authenticationProvider = new AuthenticationProvider();
+                AuthenticationProvider authenticationProviderInDb = _context.AuthenticationProvider.FirstOrDefault(x => x.ProviderKey == NewUser.Id);
+                User UserInDb = new User();
+                if (authenticationProviderInDb == null)
+                {
+                    user.Username = NewUser.Name;
+                    user.Email = NewUser.Email;
+                    user.ProfileImageName = NewUser.PhotoUrl;
+                    _context.User.Add(user);
+                    _context.SaveChanges();
+                    authenticationProvider.UserId = user.Id;
+                    authenticationProvider.ProviderType = 2;
+                    authenticationProvider.ProviderKey = NewUser.Id;
+                    _context.AuthenticationProvider.Add(authenticationProvider);
+                    _context.SaveChanges();
 
+                    var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("LitsRideSecurity@hasanDaaja"));
+                    var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+                    var claims = new List<Claim>
+                    {
+                      new Claim(ClaimTypes.Name, user.Username),
+                      new Claim(ClaimTypes.Sid, user.Id.ToString()),
+                      new Claim(ClaimTypes.Email , user.Email)
+                    };
+                    var tokeOptions = new JwtSecurityToken(
+                        issuer: "https://www.letsridein.com",
+                        audience: "https://www.letsridein.com",
+                        claims: new List<Claim>(claims),
+                        expires: DateTime.Now.AddDays(1),
+                        signingCredentials: signinCredentials
+                    );
+                    var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+                    return Ok(new { Token = tokenString });
+                }
+                else
+                {
+                    UserInDb = _context.User.FirstOrDefault(x => x.Id == authenticationProviderInDb.UserId);
+                    var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("LitsRideSecurity@hasanDaaja"));
+                    var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+                    var claims = new List<Claim>
+                    {
+                      new Claim(ClaimTypes.Name, UserInDb.Username),
+                      new Claim(ClaimTypes.Sid, UserInDb.Id.ToString()),
+                      new Claim(ClaimTypes.Email , UserInDb.Email)
+                    };
+                    var tokeOptions = new JwtSecurityToken(
+                        issuer: "https://www.letsridein.com",
+                        audience: "https://www.letsridein.com",
+                        claims: new List<Claim>(claims),
+                        expires: DateTime.Now.AddDays(1),
+                        signingCredentials: signinCredentials
+                        );
+                    var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+                    return Ok(new { Token = tokenString });
 
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+  
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
@@ -84,7 +159,9 @@
 
             return User;
         }
-       
+
+      
+
         [HttpGet]
         [Route("GetUser/{id}")]
         public IActionResult getUser(int id) {

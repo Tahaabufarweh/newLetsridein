@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Validators, FormGroup, FormControl, FormGroupDirective, NgForm, AbstractControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../services/user.service';
@@ -10,7 +10,9 @@ import { ErrorStateMatcher } from '@angular/material';
 import { AbstractClassPart } from '@angular/compiler/src/output/output_ast';
 import { InternationalizationService } from '../services/internationalization.service';
 import { LoginComponent } from '../login/login.component';
-import { AuthService, GoogleLoginProvider } from 'angular-6-social-login';
+import { GoogleLoginProvider, FacebookLoginProvider} from "angularx-social-login";
+import { AuthService } from "angularx-social-login";
+import { SocialUser } from "angularx-social-login";
 import { error } from 'util';
 
 
@@ -27,7 +29,7 @@ export interface Country {
     styleUrls: ['./register.component.scss']
 })
 /** register component*/
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
     /** register ctor */
   signUpForm = new FormGroup({
     fullName: new FormControl('', Validators.required),
@@ -42,33 +44,59 @@ export class RegisterComponent {
 
   
   hide = true;
-  
+  private user: SocialUser;
+  private loggedIn: boolean;
   constructor(
     private translate: TranslateService,
     private userService: UserService,
     private router: Router,
     private socialAuthService: AuthService,
+
     private notificationService: NotificationService) {
     translate.use(localStorage.getItem('lang') ? localStorage.getItem('lang') : 'en');
 
   }
-
-  public signinWithGoogle() {
+  ngOnInit() {
     
-    let socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
-
-    this.socialAuthService.signIn(socialPlatformProvider)
-      .then((userData) => {
-        //on success
-        //this will return user data from google. What you need is a user token which you will send it to the server
-        localStorage.setItem("googleData", JSON.stringify(userData));
-      }, error => {
-          localStorage.setItem("error", JSON.stringify(error));
-
-        });
   }
- 
-  
+  public signinWithGoogle() {
+    this.socialAuthService.authState.subscribe((user) => {
+      this.userService.createSocialUser(user).subscribe(res => {
+        let token = (<any>res).token;
+        localStorage.setItem("jwt", token);
+        this.notificationService.createNotificationService('success', 'Signup Success', 'Your account has been created');
+        this.router.navigate(["/trips"]);
+      })
+      this.user = user;
+      console.log(user)
+      this.loggedIn = (user != null);
+    });
+  }
+  public signinWithFB() {
+    this.socialAuthService.authState.subscribe((user) => {
+      this.userService.createSocialUser(user).subscribe(res => {
+        let token = (<any>res).token;
+        localStorage.setItem("jwt", token);
+        this.notificationService.createNotificationService('success', 'Signup Success', 'Your account has been created');
+        this.router.navigate(["/trips"]);
+      })
+      this.user = user;
+      console.log(user)
+      this.loggedIn = (user != null);
+    });
+  }
+  signInWithGoogle(): void {
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    this.signinWithGoogle();
+  }
+  signInWithFB(): void {
+    this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID);
+    this.signinWithFB();
+  }
+  signOut(): void {
+    this.socialAuthService.signOut();
+  }
+
   get fullName() {   
     return this.signUpForm.get('fullName') as FormControl;
   }
@@ -107,10 +135,8 @@ export class RegisterComponent {
     this.userService.createUser(this.signUpForm.value).subscribe(response => {
       
       this.notificationService.createNotificationService('success', 'Signup Success', 'Your account has been created');
-
-     setTimeout(() => {
-        this.router.navigate(["/"]);
-      }, 5000);
+      this.router.navigate(["/trips"]);
+    
       
     }, error => {
       var errormsg = error.error;
@@ -121,6 +147,35 @@ export class RegisterComponent {
    
   }
   
+
+  
+  filterItemsOfType(viewvalue) {
+
+    for (let item of this.countries) {
+      if (item.viewValue == viewvalue) {
+        return item.PhoneCode;
+      }
+    } 
+
+   
+  }
+  pass = this.password.value;
+  passValidator(AC: AbstractControl) {
+    let password = AC.get('password').value; // to get value in input tag
+    let confirmPassword = AC.get('rePass').value; // to get value in input tag
+    if (password != confirmPassword)
+    {
+      
+      AC.get('rePass').setErrors({
+        "MatchPassword": true
+      });
+      
+    } else {
+      
+      return null
+    }
+  
+  }
 
   countries: Country[] = [
     {
@@ -1329,35 +1384,6 @@ export class RegisterComponent {
       code: 'ZW'
     }
   ];
-  filterItemsOfType(viewvalue) {
-
-    for (let item of this.countries) {
-      if (item.viewValue == viewvalue) {
-        return item.PhoneCode;
-      }
-    } 
-
-   
-  }
-  pass = this.password.value;
-  passValidator(AC: AbstractControl) {
-    let password = AC.get('password').value; // to get value in input tag
-    let confirmPassword = AC.get('rePass').value; // to get value in input tag
-    if (password != confirmPassword)
-    {
-      
-      AC.get('rePass').setErrors({
-        "MatchPassword": true
-      });
-      
-    } else {
-      
-      return null
-    }
-  
-  }
-
-  
 }
 
 

@@ -12,7 +12,7 @@
     "password": "Mot de passe",
     "detailsHint": "Ecrivez vos détails sur le voyage",
     "carInfoHint": "Écrivez vos infos de voiture",
-
+    "admin": "admin",
     "passwordisrequired": "Le mot de passe doit comporter au moins 8 caractères.",
     "passwordrequired": "Mot de passe requis",
     "Language": "langue",

@@ -26,10 +26,9 @@ import { TripDetailsComponent } from '../app/trip-details/trip-details.component
 import {
   SocialLoginModule,
   AuthServiceConfig,
-  GoogleLoginProvider,
   FacebookLoginProvider,
- 
-} from "angular-6-social-login";
+  GoogleLoginProvider
+} from 'angularx-social-login';
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthService } from './services/auth.service';
@@ -46,18 +45,20 @@ import { TripRequesterDetailsComponent } from './trip-requester-details/trip-req
 import { AdsDialogComponent } from './ads-dialog/ads-dialog.component';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-// Configs 
-export function getAuthServiceConfigs() {
-  let config = new AuthServiceConfig(
-    [
+// Configs
 
-      {
-        id: GoogleLoginProvider.PROVIDER_ID,
-        provider: new GoogleLoginProvider("220033811216-ajopo4sntq32875hism060hqejog81po.apps.googleusercontent.com")
-      }
-    ]
-  );
+let config = new AuthServiceConfig([
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    provider: new GoogleLoginProvider("220033811216-rp8rrk2dgl2dj2r9lvii96orjvc6nig6.apps.googleusercontent.com")
+  },
+  {
+    id: FacebookLoginProvider.PROVIDER_ID,
+    provider: new FacebookLoginProvider("659854637808754")
+  }
+]);
 
+export function provideConfig() {
   return config;
 }
 
@@ -143,7 +144,7 @@ export function tokenGetter() {
     TripsService,
     {
       provide: AuthServiceConfig,
-      useFactory: getAuthServiceConfigs
+      useFactory: provideConfig
     },
     NotificationService,
     AuthService,

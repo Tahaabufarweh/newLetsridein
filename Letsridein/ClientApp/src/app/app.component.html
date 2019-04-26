@@ -22,6 +22,12 @@
             <p matLine *ngIf="isExpanded">{{ 'HOME.newTripLabel' | translate }}</p>
           </a>
         </mat-list-item>
+        <mat-list-item>
+          <a mat-list-item [routerLink]="['/admin']" routerLinkActive="active-link">
+            <i mat-list-icon class="material-icons">supervised_user_circle</i>
+            <p matLine *ngIf="isExpanded">{{ 'HOME.admin' | translate }}</p>
+          </a>
+        </mat-list-item>
       </mat-nav-list>
     </mat-sidenav>
 

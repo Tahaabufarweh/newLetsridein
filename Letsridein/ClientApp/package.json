@@ -36,7 +36,7 @@
     "jwt-decode": "2.2.0",
     "angular2-notifications": "2.0.0",
     "ngx-google-places-autocomplete": "2.0.3",
-    "angular-6-social-login": "1.1.1",
+    "angularx-social-login": "1.2.6",
     "jquery": "3.3.1",
     "popper.js": "^1.14.3",
     "web-animations-js": "2.3.1"

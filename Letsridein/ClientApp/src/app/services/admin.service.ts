@@ -21,6 +21,8 @@ const getReportRoute = 'AllReports';
 const adsUrl = 'api/Users/';
 const getAdsRoute = 'GetAllAds';
 
+const isAdminRoute = 'IsAdmin/';
+
 const postAdRoute = 'CreateNewAd/';
 const deleteAdRoute = 'DeleteAd/';
 @Injectable()
@@ -41,6 +43,11 @@ export class AdminService {
   deleteAd(id) {
     return this.httpClient.get(adsUrl + deleteAdRoute+ id);
   }
+
+  isAdmin(userId) {
+    return this.httpClient.get(adsUrl + isAdminRoute + userId);
+  }
+
 
   CreateAd(ad, file: File) {
 

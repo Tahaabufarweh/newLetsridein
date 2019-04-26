@@ -15,6 +15,7 @@ const baseUrl = 'api/Users/'
 const getUserRoute = 'GetUser/';
 const updateUserRoute = 'UpdateUserInfo';
 const signupRoute = 'SignUp';
+const signupSocialRoute = 'SocialMediaSignup';
 const updatePassRoute = 'UpdatePassword';
 
 const getUsersRoute = 'GetAllUsers';
@@ -46,7 +47,10 @@ export class UserService {
 
     createUser(user: User) {
         return this.httpClient.post(baseUrl + signupRoute, JSON.stringify(user), httpOptions);
-    }
+  }
+  createSocialUser(user) {
+    return this.httpClient.post(baseUrl + signupSocialRoute, user, httpOptions);
+  }
   updatePassword(user) {
     return this.httpClient.post(baseUrl + updatePassRoute, JSON.stringify(user), httpOptions);
   }

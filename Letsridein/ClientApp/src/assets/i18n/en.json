@@ -12,7 +12,7 @@
     "password": "Password",
     "detailsHint": "Write your details about the trip",
     "carInfoHint": "Write your car info",
-
+    "admin": "admin",
     "passwordisrequired": "Password Should be at least 8 characters",
     "passwordrequired": "Password is required",
     "Language": "Language",

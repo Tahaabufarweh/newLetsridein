@@ -35,6 +35,7 @@ export class AdminComponent {
   public ads;
   totalusers;
   filter = new FormControl("");
+
   constructor(public authService: AuthService,
     private tripsService: TripsService,
     public translate: TranslateService,
@@ -46,6 +47,12 @@ export class AdminComponent {
       this.authService.checkLogin();
   }
   ngOnInit() {
+    if (this.authService.isLoggedin() && this.authService.getLoggedInUserId() == 1) {
+
+    }
+    else {
+      this.router.navigate(["/trips"])
+    }
     this.getAlltrips({}, 1, 5);
     
     this.getAllUsers(this.filter.value, 1, 5);

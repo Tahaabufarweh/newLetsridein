@@ -22,15 +22,17 @@ export class TripDetailsComponent implements OnInit
   public Trip;
   public tripRequests;
   RideDialogRef: MatDialogRef<RideModalComponent>;
-  constructor(public translate: TranslateService,
-              private notificationService: NotificationService,
-              private router: ActivatedRoute,
-              public authService: AuthService,
-              public dialog: MatDialog,
+  constructor(
+    public translate: TranslateService,
+    private notificationService: NotificationService,
+    private router: ActivatedRoute,
+    public authService: AuthService,
+    public dialog: MatDialog,
     private deviceService: DeviceDetectorService,
     private requestService: TripRequestService, 
-              private tripService: TripsService,
-               private rideService: TripRequestService) {
+    private tripService: TripsService,
+    private rideService: TripRequestService
+  ) {
 
     this.authService.checkLogin();
     this.epicFunction();
@@ -79,9 +81,7 @@ export class TripDetailsComponent implements OnInit
         console.log("failed");
 
       });
-
     }
-    
   }
 
   deleteRequest(requestId, status) {
@@ -100,9 +100,6 @@ export class TripDetailsComponent implements OnInit
     console.log(requestId);
     this.requestService.AcceptOrApproveRequest(requestId, status).subscribe(response => {
       this.Trip.tripRequest = response;
-
-
-
       console.log("success", this.tripRequests)
     }, error => {
       console.log(error)
