@@ -31,7 +31,7 @@ import {
 } from 'angularx-social-login';
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { JwtModule } from '@auth0/angular-jwt';
-import { AuthService } from './services/auth.service';
+import { AuthenticationService } from './services/auth.service';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { NotificationService } from './services/notification.service';
 import { PaginationComponent } from './trips/pagination.component';
@@ -44,6 +44,8 @@ import { TripOwnerDetailsComponent } from './trip-owner-details/trip-owner-detai
 import { TripRequesterDetailsComponent } from './trip-requester-details/trip-requester-details.component';
 import { AdsDialogComponent } from './ads-dialog/ads-dialog.component';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import {SlideshowModule} from 'ng-simple-slideshow';
+
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 // Configs
 
@@ -99,6 +101,7 @@ export function tokenGetter() {
     GooglePlaceModule,
     AmazingTimePickerModule,
     BrowserAnimationsModule,
+    SlideshowModule,
     MatNativeDateModule,
     DeviceDetectorModule.forRoot(),
     MatToolbarModule, MatMenuModule, MatTableModule, MatButtonModule, MatCardModule,
@@ -147,7 +150,7 @@ export function tokenGetter() {
       useFactory: provideConfig
     },
     NotificationService,
-    AuthService,
+    AuthenticationService,
     RatingService,
     UserService,
     TripRequestService,

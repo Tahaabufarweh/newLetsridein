@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { InternationalizationService } from '../services/internationalization.service';
 import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
 import { TripsService } from '../services/trips.service';
-import { AuthService } from '../services/auth.service';
+import { AuthenticationService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../services/notification.service';
 import { error } from 'util';
@@ -34,16 +34,15 @@ export class NewTripComponent {
    
     this.toDestination.setValue(address.formatted_address)
   }
-  constructor(public translate: TranslateService, private inter: InternationalizationService, private tripsService: TripsService, public authService: AuthService, private route: Router, private notificationService: NotificationService) {
-    this.authService.checkLogin();
+  constructor(public translate: TranslateService, private inter: InternationalizationService, private tripsService: TripsService, public AuthenticationService: AuthenticationService, private route: Router, private notificationService: NotificationService) {
+    this.AuthenticationService.checkLogin();
     translate.use(localStorage.getItem('lang') !== null || localStorage.getItem('lang') !== null ? localStorage.getItem('lang') : 'en');
 
   }
 
   ngOnInit() {
-    this.tripsService.getUserTripInfo(this.authService.getLoggedInUserId()).subscribe(response => {
+    this.tripsService.getUserTripInfo(this.AuthenticationService.getLoggedInUserId()).subscribe(response => {
       this.activeUser = response;
-      console.log(this.activeUser)
       this.carBrand.setValue(this.activeUser.carBrand);
       this.carColor.setValue(this.activeUser.carColor);
       this.carModel.setValue(this.activeUser.carModel);
@@ -143,8 +142,7 @@ export class NewTripComponent {
     defaultOpen: false
   }
   changeDate() {
-    console.log("angular")
-    console.log(this.TripsForm)
+
   }
 
   //setStartTime(event: Date) {
@@ -159,15 +157,12 @@ export class NewTripComponent {
   submitTrip() {
     
   
-    this.driverId.setValue(this.authService.getLoggedInUserId());
+    this.driverId.setValue(this.AuthenticationService.getLoggedInUserId());
     this.StartDate.setValue(new Date(this.StartDate.value));
     this.ExpectedArrivalTime.setValue(new Date(this.ExpectedArrivalTime.value));
     this.carColor.setValue(this.carColor.value);
-    console.log(this.StartTime.value);
-    console.log(this.ExpectedArrivalTime.value);
-    console.log(JSON.stringify(this.TripsForm.value));
+
     this.tripsService.createNewTrip(this.TripsForm.value).subscribe(response => {
-      console.log(response);
       if (this.inter.getLanguage() == 'ar') {
         this.title = 'تم التسجيل'
         this.body = 'تم تسجيل رحلتك بنجاح'

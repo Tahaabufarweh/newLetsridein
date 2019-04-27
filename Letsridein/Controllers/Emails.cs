@@ -19,7 +19,7 @@ namespace Letsridein.Controllers
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.Credentials = new System.Net.NetworkCredential("info@letsridein.com", "Samar@taha");
 
-                MailAddress mailFrom = new MailAddress("info@letsridein.com", "Info");
+                MailAddress mailFrom = new MailAddress("info@letsridein.com", "Letsridein Info");
                 MailMessage mail = new MailMessage();
                 mail.IsBodyHtml = true;
                 mail.To.Add(Email);

@@ -83,7 +83,7 @@
             {
                 User user = new User();
                 AuthenticationProvider authenticationProvider = new AuthenticationProvider();
-                AuthenticationProvider authenticationProviderInDb = _context.AuthenticationProvider.FirstOrDefault(x => x.ProviderKey == NewUser.Id);
+                AuthenticationProvider authenticationProviderInDb = _context.AuthenticationProvider.FirstOrDefault(x => string.Equals(x.ProviderKey, NewUser.Id));
                 User UserInDb = new User();
                 if (authenticationProviderInDb == null)
                 {
@@ -176,7 +176,7 @@
 
         [HttpGet]
         [Route("GetAllUsers")]
-        public IActionResult GetAllUsers(string username="",int PageNo = 1, int PageSize = 10)
+        public IActionResult GetAllUsers( string username="", int PageNo = 1, int PageSize = 10)
         {
             var totalItems = _context.User.Count();
                    
@@ -201,7 +201,7 @@
             try
             {
                 var user = _context.User.Where(x => x.Username == username).FirstOrDefault();
-                string resetMsg = "Your reset key: ";
+                string resetMsg = "Letsridein reset password key: ";
                 
                 Random generator = new Random();
                 key = generator.Next(0, 999999).ToString("D6");
@@ -212,7 +212,7 @@
                 }
                 else if(value==1)
                 {
-                     _emailSender.SendEmail(user.Email,"Reset Password", resetMsg + key);
+                     _emailSender.SendEmail(user.Email, "Letsridein Reset Password", resetMsg + key);
                 }
                 else
                 {
@@ -280,7 +280,7 @@
                     try
                     {
                         await File.CopyToAsync(stream);
-                        advertisement.ImageName = File.FileName;
+                        advertisement.ImageName = "AdsPictures/" + File.FileName;
                         advertisement.AdvLink = AdvLink;
                         advertisement.IsActive = true;
                         _context.Advertisement.Add(advertisement);

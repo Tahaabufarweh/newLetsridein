@@ -41,7 +41,6 @@ export class UserService {
   }
   
   getUsers(filter, pageNo, pageSize) {
-    console.log(filter);
     return this.httpClient.get(baseUrl + getUsersRoute + "?username=" + filter + "&PageNo=" + pageNo + "&PageSize=" + pageSize);
   }
 
@@ -60,11 +59,9 @@ export class UserService {
 
   updateUserInfo(user)
   {
-    console.log(user)
     return this.httpClient.post(baseUrl + updateUserRoute, JSON.stringify(user), httpOptions);
   }
   resetPassword(username, value) {
-    console.log(username, value);
       return this.httpClient.get(baseUrl + resetPassRoute + "?username=" + username+"&value="+value);
     
   }

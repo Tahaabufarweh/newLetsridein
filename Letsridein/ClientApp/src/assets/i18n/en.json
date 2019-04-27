@@ -1,5 +1,6 @@
 {
   "HOME": {
+    "on": "at",
     "HELLO": "Angular",
     "TITLE": "Hello Angular with ngx-translate!",
     "SELECT": "Change language",

@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { TripRequestService } from '../services/trip-request.service';
 import { NotificationService } from '../services/notification.service';
 import { UserService } from '../services/user.service';
-import { AuthService } from '../services/auth.service';
+import { AuthenticationService } from '../services/auth.service';
 import { ProfileService } from '../services/profile.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -21,7 +21,7 @@ export class TripRequesterDetailsComponent {
   /** trip-owner-details ctor */
   constructor(private userService: UserService,
     public translate: TranslateService,
-    public authService: AuthService,
+    public AuthenticationService: AuthenticationService,
     private router: ActivatedRoute,
     private route: Router,
     private requestService: TripRequestService,

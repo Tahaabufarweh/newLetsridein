@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { InternationalizationService } from '../services/internationalization.service';
 import { CompleteProfileComponent } from '../complete-profile/complete-profile.component';
 import { $ } from 'protractor';
-import { AuthService } from '../services/auth.service';
+import { AuthenticationService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 
 import { DataSource, ArrayDataSource } from '@angular/cdk/collections';
@@ -45,14 +45,14 @@ export class ProfileComponent implements OnInit {
   constructor(public dialog: MatDialog,
     private userService: UserService,
     public translate: TranslateService,
-    public authService: AuthService,
+    public AuthenticationService: AuthenticationService,
     private router: ActivatedRoute,
     private route: Router,
     private inter: InternationalizationService,
     private profileService: ProfileService,
     private ratingService: RatingService,
     private notificationService: NotificationService) {
-    this.authService.checkLogin();
+    this.AuthenticationService.checkLogin();
     translate.use(localStorage.getItem('lang') ? localStorage.getItem('lang') : 'en');
   }
 
@@ -60,7 +60,6 @@ export class ProfileComponent implements OnInit {
     this.router.params.subscribe(param => { 
       this.userService.getUserDetialsById(param.id).subscribe(response => {
       this.user = response;
-      console.log(this.user);
     })
     })
   }
@@ -84,8 +83,6 @@ export class ProfileComponent implements OnInit {
   body;
   fillTable(rate = {} as FormGroup) {
 
-    console.log(rate);
-    
     this.ratingService.createRate(rate, Number(this.user.id)).subscribe(response => {
       if (this.inter.getLanguage() == 'ar') {
         this.title = 'تم التقييم بنجاح'
@@ -109,9 +106,6 @@ export class ProfileComponent implements OnInit {
     
   }
   fillReport(report = {} as FormGroup) {
-
-    console.log(report);
-    console.log(this.user.id);
     this.profileService.createReport(report, Number(this.user.id)).subscribe(response => {
       if (this.inter.getLanguage() == 'ar') {
         this.title = 'تم الابلاغ بنجاح'
@@ -136,8 +130,6 @@ export class ProfileComponent implements OnInit {
   }
   editProfileInfo(user) {
 
-    console.log(user);
-    console.log(this.user.id);
     this.userService.updateUserInfo(user).subscribe(response => {
       this.user = response;
       if (this.inter.getLanguage() == 'ar') {
@@ -183,8 +175,7 @@ export class ProfileComponent implements OnInit {
   }
 
   saveUserPhoto(file) {
-    console.log(this.url)
-    this.profileService.saveProfilePic(this.authService.getLoggedInUserId(), file).subscribe(response => {
+    this.profileService.saveProfilePic(this.AuthenticationService.getLoggedInUserId(), file).subscribe(response => {
       let user;
       if (this.inter.getLanguage() == 'ar') {
         this.title = 'تم رفع الصورة'
@@ -201,7 +192,6 @@ export class ProfileComponent implements OnInit {
       this.notificationService.createNotificationService('success', 'Uploading Success', 'Profile picture uploaded successfully');
       user = response;
       this.user.profileImageName = user.profileImageName;
-      console.log(this.user.profileImageName )
     }, error => {
       if (this.inter.getLanguage() == 'ar') {
         this.body = 'خطأ في تحميل الصورة'

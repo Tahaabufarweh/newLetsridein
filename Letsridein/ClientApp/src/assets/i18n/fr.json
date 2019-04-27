@@ -1,5 +1,6 @@
 {
   "HOME": {
+    "on": "de",
     "HELLO": "asdasdasf",
     "TITLE": "Bonjour Angular avec ngx-translate !",
     "SELECT": "Changer la langue",
@@ -122,7 +123,7 @@
     "EnterNewPassword": "Entrez un nouveau mot de passe",
     "Forget Pass": "Mot de passe oublié? Réinitialiser",
     "newTripNote": "Ne choisissez pas dans la liste si vous souhaitez conserver le texte que vous avez saisi"
-    
+
 
 
   },

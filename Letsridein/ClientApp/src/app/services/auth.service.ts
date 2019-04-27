@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { AuthService } from "angularx-social-login";
 const tokenSoapLink = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/";
 @Injectable()
-export class AuthService {
+export class AuthenticationService {
 
-  constructor(private jwtService: JwtHelperService, private router: Router) {
+  constructor(private jwtService: JwtHelperService, private socialAuthService: AuthService, private router: Router) {
 
   }
 
@@ -48,6 +49,7 @@ export class AuthService {
 
   Logout() {
     localStorage.removeItem("jwt");
+    this.socialAuthService.signOut();
     this.router.navigate(["login"])
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AuthService } from '../services/auth.service';
+import { AuthenticationService } from '../services/auth.service';
 import { TripsService } from '../services/trips.service';
 import { ActivatedRoute } from '@angular/router';
 import { TripRequestService } from '../services/trip-request.service';
@@ -26,7 +26,7 @@ export class TripDetailsComponent implements OnInit
   constructor(public translate: TranslateService,
               private notificationService: NotificationService,
               private router: ActivatedRoute,
-      public authService: AuthService,
+    public AuthenticationService: AuthenticationService,
       private inter: InternationalizationService,
               public dialog: MatDialog,
     private deviceService: DeviceDetectorService,
@@ -35,7 +35,7 @@ export class TripDetailsComponent implements OnInit
     private rideService: TripRequestService
   ) {
 
-    this.authService.checkLogin();
+    this.AuthenticationService.checkLogin();
     this.epicFunction();
 
   }

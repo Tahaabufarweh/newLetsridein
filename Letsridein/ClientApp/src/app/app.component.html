@@ -47,7 +47,7 @@
             <p matLine *ngIf="isExpanded">{{ 'HOME.newTripLabel' | translate }}</p>
           </a>
         </mat-list-item>
-        <button mat-icon-button [matMenuTriggerFor]="menuNotify" *ngIf="this.authService.isLoggedin()">
+        <button mat-icon-button [matMenuTriggerFor]="menuNotify" *ngIf="this.AuthenticationService.isLoggedin()">
           <mat-icon [matBadge]="userNotifications?.length" matBadgeColor="warn">notification_important</mat-icon>
         </button>
         <mat-menu #menuNotify="matMenu">
@@ -62,16 +62,16 @@
           <mat-icon class="example-icon mr-3">account_circle</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item routerLink="/login" *ngIf="!this.authService.isLoggedin()">
+          <button mat-menu-item routerLink="/login" *ngIf="!this.AuthenticationService.isLoggedin()">
             <span>{{ 'HOME.Login' | translate }}</span>
           </button>
-          <button mat-menu-item routerLink="/register" *ngIf="!this.authService.isLoggedin()">
+          <button mat-menu-item routerLink="/register" *ngIf="!this.AuthenticationService.isLoggedin()">
             <span>{{ 'HOME.Signup' | translate }}</span>
           </button>
-          <button mat-menu-item routerLink="/profile/{{authService.getLoggedInUserId()}}" *ngIf="this.authService.isLoggedin()">
+          <button mat-menu-item routerLink="/profile/{{AuthenticationService.getLoggedInUserId()}}" *ngIf="this.AuthenticationService.isLoggedin()">
             <span>{{ 'HOME.MyProfile' | translate }}</span>
           </button>
-          <button mat-menu-item (click)="this.authService.Logout()" *ngIf="this.authService.isLoggedin()">
+          <button mat-menu-item (click)="this.AuthenticationService.Logout()" *ngIf="this.AuthenticationService.isLoggedin()">
             <span>{{ 'HOME.Logout' | translate }}</span>
           </button>
         </mat-menu>

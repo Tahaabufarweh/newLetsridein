@@ -4,7 +4,7 @@ import { InternationalizationService } from '../services/internationalization.se
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthenticationService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 
 import { MatDialogRef } from '@angular/material';
@@ -27,12 +27,11 @@ export class RideModalComponent implements OnInit {
     
   })
   constructor(public translate: TranslateService,
-    
-    private router: ActivatedRoute,
-    public auth: AuthService,
-    private userService: UserService,
-    private dialogRef: MatDialogRef<RideModalComponent>
-  )
+              private router: ActivatedRoute,
+              public AuthenticationService: AuthenticationService,
+              private userService: UserService,
+              private dialogRef: MatDialogRef<RideModalComponent>
+            )
   {
     translate.use(localStorage.getItem('lang') ? localStorage.getItem('lang') : 'en');
  }
@@ -50,14 +49,13 @@ export class RideModalComponent implements OnInit {
   createnewRide() {
     let date = new Date();
     this.rideForm.setValue({
-      passengerId: Number(this.auth.getLoggedInUserId()),
+      passengerId: Number(this.AuthenticationService.getLoggedInUserId()),
       
       passengerNote: this.passengerNote.value,
       status:1,
       paymentMethod: 1,
       
   });
-console.log(this.rideForm.value);
 this.dialogRef.close(this.rideForm.value);
    
   }

@@ -52,11 +52,8 @@ export class AdminService {
   CreateAd(ad, file: File) {
 
     const formData: FormData = new FormData();
-    console.log(ad);
     formData.append('AdvLink', ad);
     formData.append('File', file);
-   
-    console.log(formData);
     return this.httpClient.post(adsUrl + postAdRoute , formData);
    
   }

@@ -1,5 +1,5 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { AuthenticationService } from '../services/auth.service';
 import { TripsService } from '../services/trips.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -36,7 +36,7 @@ export class AdminComponent {
   totalusers;
   filter = new FormControl("");
 
-  constructor(public authService: AuthService,
+  constructor(public authService: AuthenticationService,
     private tripsService: TripsService,
     public translate: TranslateService,
     public userService: UserService,
@@ -65,7 +65,6 @@ export class AdminComponent {
     this.tripsService.getAllTrips(filter, pageNo, pageSize).subscribe(response => {
       this.all = response;
       this.allTrips = this.all.trips;
-      console.log(this.allTrips);
 
     }, error => {
       console.log(error)
@@ -87,7 +86,6 @@ export class AdminComponent {
     this.adminService.getAds().subscribe(response => {
       this.ads = response;
 
-      console.log(this.ads);
 
     }, error => {
       console.log("failed");
@@ -100,7 +98,6 @@ export class AdminComponent {
   }
   fillAd(AD) {
 
-    console.log("bla bla",AD);
 
     this.adminService.CreateAd(AD.AdvLink, AD.ImageName).subscribe(response => {
 
@@ -117,8 +114,7 @@ export class AdminComponent {
       this.allReports = response;
       this.reports = this.allReports.reports;
       this.totalReports = this.allReports.totalReports;
-      console.log(this.allReports);
-      console.log(this.totalReports);
+
     }, error => {
       console.log("failed")
     })
@@ -129,7 +125,6 @@ export class AdminComponent {
     return this.userService.getUserById(id).subscribe(response => {
       this.reportUsers = response;
      this.reportUsername = this.reportUsers.username;
-     console.log(this.reportUsername);
       return this.reportUsername;
       })
   }
@@ -141,27 +136,20 @@ export class AdminComponent {
       this.allUsers = res;
       this.users = this.allUsers.users;
       this.totalusers = this.allUsers.totalUsers;
-      console.log(this.totalusers);
-      console.log(this.users);
-
-   
     }), error => {
       console.log("failedd");
       }
 
   }
   onPageChanged(page: PageEvent) {
-    console.log(page);
     this.getAllUsers(this.filter.value, page.pageIndex + 1, page.pageSize)
   }
 
   tripsPageChanged(page: PageEvent) {
-    console.log(page);
     this.getAlltrips({}, page.pageIndex + 1, page.pageSize)
   }
 
   reportsPageChanged(page: PageEvent) {
-    console.log(page);
     this.getAllreports(page.pageIndex + 1, page.pageSize)
   }
   

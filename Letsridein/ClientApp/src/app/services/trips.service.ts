@@ -21,8 +21,6 @@ export class TripsService {
     }
 
   getAllTrips(filter, pageNo, pageSize) {
-    console.log(pageNo)
-    console.log(pageSize)
     return this.httpClient.post(baseUrl + getAllTripsRoute + "?PageNo=" + pageNo + "&PageSize=" + pageSize, JSON.stringify(filter), httpOptions)
     }
 

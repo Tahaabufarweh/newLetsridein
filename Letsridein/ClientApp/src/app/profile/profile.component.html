@@ -13,7 +13,7 @@
         <div class="avatar-upload">
           <div class="avatar-edit">
             <input type='file' id="imageUpload" (change)=readUrl($event) accept=".png, .jpg, .jpeg" />
-            <label for="imageUpload" *ngIf="user.id ==authService.getLoggedInUserId()"></label>
+            <label for="imageUpload" *ngIf="user.id ==AuthenticationService.getLoggedInUserId()"></label>
           </div>
           <div class="avatar-preview">
             <img class="imgpreview" [src]="user.profileImageName ? user.profileImageName : this.url" />
@@ -31,14 +31,14 @@
 
 
       <div class="row text-center">
-        <div class="col" *ngIf="user.id !=authService.getLoggedInUserId()">
+        <div class="col" *ngIf="user.id !=AuthenticationService.getLoggedInUserId()">
           <button mat-raised-button color="primary" (click)="openRatingDialog()">{{ 'HOME.rateButton' | translate }}</button>
           <div class="m-2"></div>
           <button mat-raised-button color="primary" (click)="openReportDialog()">{{ 'HOME.reprot' | translate }}</button>
 
         </div>
          
-        <div class="col" *ngIf="user.id ==authService.getLoggedInUserId()">
+        <div class="col" *ngIf="user.id ==AuthenticationService.getLoggedInUserId()">
           <button mat-raised-button color="primary" (click)="openCompleteDialog()">{{ 'HOME.editprofileinfo' | translate }}</button>
           <div class="m-2"></div>
         </div>
@@ -182,7 +182,7 @@
 
 
         </mat-tab>
-        <mat-tab label="{{ 'HOME.Requests' | translate }}" *ngIf="user.id ==authService.getLoggedInUserId()">
+        <mat-tab label="{{ 'HOME.Requests' | translate }}" *ngIf="user.id ==AuthenticationService.getLoggedInUserId()">
           <table class="table">
             <thead>
               <tr>

@@ -11,9 +11,8 @@
 
       </mat-card-header>
       <div class="row d-flex justify-content-center">
-        <a href="#" class="btn btn-primary btn-circle btn-lg"><i class="fa fa-facebook"></i></a>
-        <a href="#" class="btn btn-danger btn-circle btn-lg" (click)="socialSignIn('google')"><i class="fa fa-google"></i></a>
-        <a href="#" class="btn btn-info btn-circle btn-lg"><i class="fa fa-twitter"></i></a>
+        <a class="btn btn-primary btn-circle btn-lg m-1" (click)="signInWithFB()"><i style="color:white !important" class="fa fa-facebook"></i></a>
+        <a class="btn btn-danger btn-circle btn-lg m-1" (click)="signInWithGoogle()"><i style="color:white !important" class="fa fa-google"></i></a>
       </div>
       <div class="row">
         <div class="col-md-4"><hr /></div>

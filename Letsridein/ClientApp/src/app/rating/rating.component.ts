@@ -4,7 +4,7 @@ import { InternationalizationService } from '../services/internationalization.se
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { RatingService } from '../services/rating.service';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthenticationService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { ProfileComponent } from '../profile/profile.component';
 import { MatDialogRef } from '@angular/material';
@@ -30,7 +30,7 @@ export class RatingComponent {
   constructor(public translate: TranslateService,
     private ratingService: RatingService,
     private router: ActivatedRoute,
-    public auth: AuthService,
+    public auth: AuthenticationService,
     private userService: UserService,
     private dialogRef: MatDialogRef<RatingComponent>
   ) {
@@ -64,7 +64,6 @@ export class RatingComponent {
       
       note: this.note.value
     });
-    console.log(this.ratingForm.value);
     this.dialogRef.close(this.ratingForm.value);
     //this.ratingService.createRate(this.ratingForm.value).subscribe(response => {
 

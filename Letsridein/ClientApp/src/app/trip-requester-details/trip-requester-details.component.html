@@ -1,6 +1,6 @@
 <mat-card-title>{{ 'HOME.Requests' | translate }} </mat-card-title>
 <div *ngFor="let request of tripRequests">
-  <mat-card *ngIf="request.passengerId == authService.getLoggedInUserId()">
+  <mat-card *ngIf="request.passengerId == AuthenticationService.getLoggedInUserId()">
     <mat-card-header>
       <img *ngIf="request.passenger.profileImageName !==null" mat-card-avatar class="avatar-preview" [src]="request?.passenger.profileImageName ? 'ProfilePictures/' + request?.passenger.id + '/' + request?.passenger.profileImageName : this.url " />
       <div *ngIf="request.passenger.profileImageName ===null" mat-card-avatar class="example-header-image"></div>

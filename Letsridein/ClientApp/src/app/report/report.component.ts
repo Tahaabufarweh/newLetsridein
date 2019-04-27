@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthenticationService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { MatDialogRef } from '@angular/material';
 
@@ -23,7 +23,7 @@ export class ReportComponent implements OnInit {
   constructor(public translate: TranslateService,
 
     private router: ActivatedRoute,
-    private auth: AuthService,
+    private auth: AuthenticationService,
     private userService: UserService,
     private dialogRef: MatDialogRef<ReportComponent>)
   {
@@ -42,7 +42,6 @@ export class ReportComponent implements OnInit {
       note: this.note.value,
       
     });
-    console.log(this.reportForm.value);
     this.dialogRef.close(this.reportForm.value);
 
   }

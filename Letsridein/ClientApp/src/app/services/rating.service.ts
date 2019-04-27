@@ -16,7 +16,6 @@ export class RatingService {
     }
 
   createRate(rate, ratedUser) {
-    console.log(ratedUser);
     return this.http.post(baseUrl + createRate + "?ratedUser=" + ratedUser, JSON.stringify(rate), httpOptions);
   }
 }

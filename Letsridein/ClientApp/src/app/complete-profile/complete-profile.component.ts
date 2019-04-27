@@ -4,7 +4,7 @@ import { InternationalizationService } from '../services/internationalization.se
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthenticationService } from '../services/auth.service';
 import { MatDialogRef } from '@angular/material';
 export interface Country {
   code: string;
@@ -43,7 +43,6 @@ export class CompleteProfileComponent implements OnInit {
   ngOnInit() {
     this.userService.getUserDetialsById(this.authService.getLoggedInUserId()).subscribe(response => {
       this.user = response;
-      console.log(this.user);
       this.EditProfileForm.patchValue(this.user)
 
     })
@@ -54,7 +53,7 @@ export class CompleteProfileComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private dialogRef: MatDialogRef<CompleteProfileComponent>,
-    private authService: AuthService) {
+    private authService: AuthenticationService) {
 
     translate.use(localStorage.getItem('lang')  ? localStorage.getItem('lang') : 'en');
 
@@ -1343,7 +1342,6 @@ export class CompleteProfileComponent implements OnInit {
    
    
     
-    console.log(this.user);
     this.dialogRef.close(this.user);
   }
   

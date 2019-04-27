@@ -28,8 +28,7 @@ namespace Letsridein.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer( "data source = nl1 - wsq1.a2hosting.com; initial catalog = letsride_in; User ID = letsride_has; Password = has@07$a2; MultipleActiveResultSets = True; App = EntityFramework & quot; ");
+                optionsBuilder.UseSqlServer("data source=IT-Taha;initial catalog=LetsRidein;Integrated Security= True;MultipleActiveResultSets=True;App=EntityFramework&quot;");
             }
         }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { InternationalizationService } from './services/internationalization.service';
 import { TranslateService } from '@ngx-translate/core';
-import { AuthService } from './services/auth.service';
+import { AuthenticationService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { NotificationService } from './services/notification.service';
 import { interval, Subscription } from 'rxjs';
@@ -32,14 +32,9 @@ export class AppComponent implements OnInit {
   isAdmin;
   isDesktopDevice;
   epicFunction() {
-    console.log('hello Home component');
     this.deviceInfo = this.deviceService.getDeviceInfo();
     this.isMobile = this.deviceService.isMobile();    
     this.isDesktopDevice = this.deviceService.isDesktop();
-    console.log(this.deviceInfo);
-    console.log(this.isMobile);  // returns if the device is a mobile device (android / iPhone / windows-phone etc)
-            
-    console.log(this.isDesktopDevice); // returns if the app is running on a Desktop browser.
   }
   menuItems: any[];
   public userNotifications : any = [];
@@ -47,7 +42,7 @@ export class AppComponent implements OnInit {
   @Input() themeColor = '';
 
   constructor(public translate: TranslateService,
-    public authService: AuthService,
+    public AuthenticationService: AuthenticationService,
     private deviceService: DeviceDetectorService,
     private router: Router,
     private langService: InternationalizationService,
@@ -56,7 +51,7 @@ export class AppComponent implements OnInit {
   ) {
    
     this.langService.getLanguage()
-    this.authService.checkLogin();
+    this.AuthenticationService.checkLogin();
     this.epicFunction();
   }
   
@@ -67,7 +62,7 @@ export class AppComponent implements OnInit {
     return false;
   }
   ngOnInit() {
-    if (this.authService.isLoggedin() && this.authService.getLoggedInUserId() == 1) {
+    if (this.AuthenticationService.isLoggedin() && this.AuthenticationService.getLoggedInUserId() == 1) {
       this.isAdmin = true;
     }
     this.getUserNotifications()
@@ -80,9 +75,8 @@ export class AppComponent implements OnInit {
     this.langService.setLang(value)
   }
   getUserNotifications() {
-    this.notificationService.getUserNotification(this.authService.getLoggedInUserId()).subscribe(response => {
+    this.notificationService.getUserNotification(this.AuthenticationService.getLoggedInUserId()).subscribe(response => {
       this.userNotifications = response;
-      console.log(this.userNotifications)
     }, error => { console.log("failed") }
     )
   }

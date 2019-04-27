@@ -46,14 +46,15 @@ export class RegisterComponent implements OnInit {
   hide = true;
   private user: SocialUser;
   private loggedIn: boolean;
-  constructor(
+  constructor
+    (
     private translate: TranslateService,
     private userService: UserService,
     private router: Router,
     private inter: InternationalizationService,
     private socialAuthService: AuthService,
-
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService
+  ) {
     translate.use(localStorage.getItem('lang') ? localStorage.getItem('lang') : 'en');
     
   }
@@ -69,30 +70,17 @@ export class RegisterComponent implements OnInit {
         this.router.navigate(["/trips"]);
       })
       this.user = user;
-      console.log(user)
       this.loggedIn = (user != null);
     });
   }
-  public signinWithFB() {
-    this.socialAuthService.authState.subscribe((user) => {
-      this.userService.createSocialUser(user).subscribe(res => {
-        let token = (<any>res).token;
-        localStorage.setItem("jwt", token);
-        this.notificationService.createNotificationService('success', 'Signup Success', 'Your account has been created');
-        this.router.navigate(["/trips"]);
-      })
-      this.user = user;
-      console.log(user)
-      this.loggedIn = (user != null);
-    });
-  }
+
   signInWithGoogle(): void {
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
     this.signinWithGoogle();
   }
   signInWithFB(): void {
     this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID);
-    this.signinWithFB();
+    this.signinWithGoogle();
   }
   signOut(): void {
     this.socialAuthService.signOut();
@@ -156,7 +144,6 @@ export class RegisterComponent implements OnInit {
       
     }, error => {
       var errormsg = error.error;
-      console.log(error);
       if (this.inter.getLanguage() == 'ar') {
         this.title = 'فشل التسجيل'
         this.body = 'لم تم انشاء حسابك بنجاح يرجى التأكد من جميع الحقول'

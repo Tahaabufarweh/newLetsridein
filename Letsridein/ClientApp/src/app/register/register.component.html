@@ -1,10 +1,6 @@
 
 <div class="container">
-  <img src="{{ user.photoUrl }}">
-  <div>
-    <h4>{{ user.name }}</h4>
-    <p>{{ user.email }}</p>
-  </div>
+
   <div class="row align-items-center">
     <div class="col">
 
@@ -17,7 +13,6 @@
         <div class="row d-flex justify-content-center p-1">
           <a class="btn btn-primary btn-circle btn-lg m-1" (click)="signInWithFB()"><i style="color:white !important" class="fa fa-facebook"></i></a>
           <a class="btn btn-danger btn-circle btn-lg m-1" (click)="signInWithGoogle()"><i style="color:white !important" class="fa fa-google"></i></a>
-          <a class="btn btn-info btn-circle btn-lg m-1"><i style="color:white !important" class="fa fa-twitter"></i></a>
         </div>
         <div class="row">
           <div class="col-md-4"><hr /></div>
