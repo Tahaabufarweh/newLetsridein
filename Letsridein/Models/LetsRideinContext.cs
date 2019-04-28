@@ -28,7 +28,7 @@ namespace Letsridein.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("data source=IT-Taha;initial catalog=LetsRidein;Integrated Security= True;MultipleActiveResultSets=True;App=EntityFramework&quot;");
+                optionsBuilder.UseSqlServer("data source=nl1-wsq1.a2hosting.com;initial catalog=letsride_in;User ID=letsride_has; Password=has@07$a2;MultipleActiveResultSets=True;App=EntityFramework&quot;");
             }
         }
 
