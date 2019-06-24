@@ -45,8 +45,10 @@ export class TripDetailsComponent implements OnInit
       console.log(params.id);
       this.tripService.getTripById(params.id).subscribe(response => {
         this.Trip = response;
+
+
         this.tripRequests = this.Trip.tripRequest
-        console.log(this.Trip);
+        console.log(this.tripRequests);
       })
     })
   }

@@ -35,6 +35,7 @@
     "seatsNorequired": "Seats Number is required",
     "details": "Details",
     "carInfo": "Car Info",
+    "startingPoint": "Starting Point",
     "carInfoRequired": "Car info is required",
     "submit": "Submit",
     "filterButton": "Filter",

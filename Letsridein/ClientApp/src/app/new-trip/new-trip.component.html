@@ -164,8 +164,7 @@
           <div class="row">
             <div class="col-md-12">
               <mat-form-field class="col-md-12">
-                <input matInput placeholder="{{ 'HOME.carInfo' | translate }}" formControlName="CarInfo" matTextareaAutosize maxlength="500">
-                <mat-hint align="start"><strong>{{ 'HOME.carInfoHint' | translate }}</strong> </mat-hint>
+                <input matInput ngx-google-places-autocomplete #placesRef2="ngx-places" (onAddressChange)="handleTripAddressChange($event)" placeholder="{{ 'HOME.startingPoint' | translate }}" formControlName="CarInfo">
                 <mat-hint align="end">{{CarInfo.value.length}} / 500</mat-hint>
                 <mat-error *ngIf="CarInfo.touched && CarInfo.invalid">
                   {{ 'HOME.carInfoRequired' | translate }}

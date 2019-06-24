@@ -82,9 +82,10 @@ export class LoginComponent {
       this.userService.createSocialUser(user).subscribe(res => {
         let token = (<any>res).token;
         localStorage.setItem("jwt", token);
-        this.notificationService.createNotificationService('success', 'Signup Success', 'Your account has been created');
         this.router.navigate(["/trips"]);
-      })
+      }, error => {
+          
+        })
 
     });
   }

@@ -18,7 +18,7 @@
             <mat-list-item>  <b>{{ 'NewTrip.manufacturingYear' | translate }}:</b> &nbsp; {{Trip?.manufacturingYear}} </mat-list-item>
             <mat-list-item>   <b>{{ 'NewTrip.CarColor' | translate }}:</b> &nbsp; {{Trip?.carColor}} </mat-list-item>
             <mat-list-item>   <b> {{ 'HOME.carNo' | translate }}:</b> &nbsp; {{Trip?.carNo}} </mat-list-item>
-            <mat-list-item>   <b>{{ 'HOME.carInfo' | translate }}: </b> &nbsp; {{Trip?.carInfo}} </mat-list-item>
+            <mat-list-item>   <b>{{ 'HOME.carInfo' | translate }}: </b> &nbsp; {{Trip?.startingPoint}} </mat-list-item>
           </mat-list>
         </mat-card-content>
       </mat-card>
@@ -56,7 +56,7 @@
     </div>
     <div class="row">
       <div class="col-md-6" *ngFor="let request of Trip?.tripRequest"  style="margin-bottom:15px !important">
-        <mat-card *ngIf="request.passengerId == AuthenticationService.getLoggedInUserId()">
+        <mat-card *ngIf="request.passengerId == AuthenticationService.getLoggedInUserId() || Trip.driverId == AuthenticationService.getLoggedInUserId()">
           <mat-card-header>
             <img mat-card-avatar class="avatar-preview" [src]="request?.passenger.profileImageName ? request?.passenger.profileImageName : 'DemoPic.png'" />
             <mat-card-title><a [routerLink]="['/profile',request.passenger.id ]">{{request.passenger.username}}</a></mat-card-title>

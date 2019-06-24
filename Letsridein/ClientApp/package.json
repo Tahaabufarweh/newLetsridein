@@ -38,7 +38,7 @@
     "ngx-google-places-autocomplete": "2.0.3",
     "angularx-social-login": "1.2.6",
     "ng-simple-slideshow": "1.2.9",
-    "jquery": "3.3.1",
+    "jquery": "3.3.0",
     "popper.js": "^1.14.3",
     "web-animations-js": "2.3.1"
   },

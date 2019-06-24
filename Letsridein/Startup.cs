@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -38,12 +39,38 @@ namespace Letsridein
                 options.ExcludedHosts.Add("www.letsridein.com");
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowMyOrigin",
+                builder => builder.WithOrigins("http://www.letsridein.com",
+                                               "http://letsridein.com",
+                                               "https://www.letsridein.com",
+                                               "http://localhost:44374",
+                                               "https://localhost:44374",
+                                               "https://letsridein.com")
+                                                   .AllowAnyOrigin()
+                                                   .AllowAnyMethod()
+                                                   .AllowAnyHeader());
+            });
+
+            
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new CorsAuthorizationFilterFactory("AllowMyOrigin"));
+            });
+
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<EmailSender, Emails>();
             services.Configure<SMSoptions>(Configuration);
+            services.AddMvc();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddMvc().AddJsonOptions(options => { options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; });
             services.AddDbContext<LetsRideinContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
+
+            
+
+
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               .AddJwtBearer(options =>
               {
@@ -69,6 +96,8 @@ namespace Letsridein
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
+            app.UseCors("AllowMyOrigin");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -79,6 +108,8 @@ namespace Letsridein
                 app.UseHsts();
             }
 
+
+         
             app.Use(async (context, next) =>
             {
                 if (context.Request.IsHttps)
@@ -96,6 +127,7 @@ namespace Letsridein
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+        
 
             app.UseMvc(routes =>
             {

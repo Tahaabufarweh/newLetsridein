@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Letsridein.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace Letsridein.Controllers
 {

@@ -24,6 +24,7 @@ export class NewTripComponent {
   focus1;
   @ViewChild("placesRef") placesRef: GooglePlaceDirective;
   @ViewChild("placesRef") placesRef1: GooglePlaceDirective;
+  @ViewChild("placesRef") placesRef2: GooglePlaceDirective;
 
   public handleFromAddressChange(address) {
  
@@ -33,6 +34,11 @@ export class NewTripComponent {
   public handleToAddressChange(address) {
    
     this.toDestination.setValue(address.formatted_address)
+  }
+
+  public handleTripAddressChange(address) {
+
+    this.CarInfo.setValue(address.formatted_address)
   }
   constructor(public translate: TranslateService, private inter: InternationalizationService, private tripsService: TripsService, public AuthenticationService: AuthenticationService, private route: Router, private notificationService: NotificationService) {
     this.AuthenticationService.checkLogin();

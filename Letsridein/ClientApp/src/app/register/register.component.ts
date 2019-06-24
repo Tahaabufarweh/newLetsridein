@@ -6,7 +6,7 @@ import { NotificationService } from '../services/notification.service';
 import { NotificationsService } from 'angular2-notifications';
 import { Router } from '@angular/router';
 import { forEach } from '@angular/router/src/utils/collection';
-import { ErrorStateMatcher } from '@angular/material';
+import { ErrorStateMatcher, MatDialog } from '@angular/material';
 import { AbstractClassPart } from '@angular/compiler/src/output/output_ast';
 import { InternationalizationService } from '../services/internationalization.service';
 import { LoginComponent } from '../login/login.component';
@@ -14,6 +14,7 @@ import { GoogleLoginProvider, FacebookLoginProvider} from "angularx-social-login
 import { AuthService } from "angularx-social-login";
 import { SocialUser } from "angularx-social-login";
 import { error } from 'util';
+import { PolicyComponent } from './policy/policy.component';
 
 
 
@@ -48,16 +49,26 @@ export class RegisterComponent implements OnInit {
   private loggedIn: boolean;
   constructor
     (
+      public dialog: MatDialog,
     private translate: TranslateService,
     private userService: UserService,
     private router: Router,
     private inter: InternationalizationService,
     private socialAuthService: AuthService,
+   
     private notificationService: NotificationService
   ) {
     translate.use(localStorage.getItem('lang') ? localStorage.getItem('lang') : 'en');
     
   }
+
+  getLang() {
+    return this.inter.getLanguage();
+  }
+  openDialog() {
+    const dialogRef = this.dialog.open(PolicyComponent);
+  }
+
   ngOnInit() {
     
   }

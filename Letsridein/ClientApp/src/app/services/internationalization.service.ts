@@ -18,7 +18,7 @@ export class InternationalizationService {
     if (!langToken) {
       localStorage.setItem("lang", 'en')
       this.translate.use('en')
-      return 'ar'
+      return 'en'
     }
    
     this.translate.use(langToken)

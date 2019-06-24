@@ -25,7 +25,9 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.css"
+              "src/styles.scss",
+              "src/custom-theme.scss",
+              "src/light-custom-theme.scss"
             ],
             "scripts": []
           },

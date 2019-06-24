@@ -17,8 +17,9 @@
     using Microsoft.AspNetCore.Hosting;
     using Letsridein.Models;
     using Letsridein.Services;
+    using Microsoft.AspNetCore.Cors;
     #endregion
-
+    [EnableCors("AllowMyOrigin")]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -89,6 +90,15 @@
                 {
                     user.Username = NewUser.Name;
                     user.Email = NewUser.Email;
+                    if (CheckUniqueUsername(user.Username))
+                    {
+                        return BadRequest("Username is exist!");
+                    }
+                    else if (CheckUniqueEmail(user.Email))
+                    {
+                        return BadRequest("Email is exist!");
+                    }
+
                     user.ProfileImageName = NewUser.PhotoUrl;
                     _context.User.Add(user);
                     _context.SaveChanges();

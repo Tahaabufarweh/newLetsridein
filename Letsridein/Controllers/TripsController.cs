@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Letsridein.Models;
 using Letsridein.Models.Enum;
+using Microsoft.AspNetCore.Cors;
 
 namespace Letsridein.Controllers
 {
@@ -170,7 +171,7 @@ namespace Letsridein.Controllers
         /// <returns>list of trips </returns>
         [HttpPost]
         [Route("GetTripsSearch")]
-        public async Task<ActionResult<TripsPageModel>> GetTripsSearch([FromBody]FilterTripsResource Search , int PageNo = 1, int PageSize = 10)
+        public IActionResult GetTripsSearch([FromBody]FilterTripsResource Search , int PageNo = 1, int PageSize = 10)
         {
 
          
@@ -179,25 +180,42 @@ namespace Letsridein.Controllers
                 var totalItems = _context.Trip
                                   .Where(x => x.StartDate >= DateTime.Now)
                                   .Count();
-                var trip = await _context.Trip.Where(x => (string.IsNullOrEmpty(Search.FromDest) || x.FromDestination.Contains(Search.FromDest))
-                                                                  && (string.IsNullOrEmpty(Search.ToDest) || x.FromDestination.Contains(Search.ToDest))
-                                                                  && (Search.StartTime == null || x.StartDate >= Search.StartTime)
-                                                                  && (Search.PriceMin == null || x.Price >= Search.PriceMin)
-                                                                  && (Search.PriceMax == null || x.Price <= Search.PriceMax)
-                                                                  && (x.StartDate >= DateTime.Now))
+
+                var trip = _context.Trip.Where(x => x.StartDate >= DateTime.Now)
                                                                   .Include(x => x.Driver)
-                                                                  .OrderBy(y => y.StartDate).Skip((PageNo - 1) * PageSize).Take(PageSize)
-                                                                  .ToListAsync();
+                                                                  .OrderByDescending(x => x.StartDate).Skip((PageNo - 1) * PageSize).Take(PageSize);
+
+
+
+                if(Search != null)
+                {
+                    if (Search.StartTime == null)
+                        trip = trip.Where(x => x.StartDate == Search.StartTime);
+
+                    if (Search.FromDest == null)
+                        trip = trip.Where(x => x.FromDestination.Contains(Search.FromDest));
+
+                    if (Search.ToDest == null)
+                        trip = trip.Where(x => x.ToDestination.Contains(Search.ToDest));
+
+                    if (Search.PriceMin == null)
+                        trip = trip.Where(x => x.Price >= Search.PriceMin);
+
+                    if (Search.PriceMax == null)
+                        trip = trip.Where(x => x.Price <= Search.PriceMax);
+                }
+
                 if (trip == null)
                 {
                     return NotFound();
                 }
 
-                return new TripsPageModel()
+                var model = new TripsPageModel()
                 {
-                    Trips = trip,
+                    Trips =  trip.ToList(),
                     TotalTrips = totalItems
                 };
+                return Ok(model);
 
             }
             catch (Exception d)

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Letsridein.Models;
 using Letsridein.Models.Enum;
 using Letsridein.Models.Notifications;
+using Microsoft.AspNetCore.Cors;
 
 namespace Letsridein.Controllers
 {

@@ -35,6 +35,7 @@
     "seatsNorequired": "nombre de places est requis",
     "details": "détails",
     "carInfo": "info voiture",
+    "startingPoint": "point de départ",
     "carInfoRequired": "La voiture est obligatoire",
     "submit": "Soumettre",
     "filterButton": "Filtre",

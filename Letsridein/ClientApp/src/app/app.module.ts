@@ -47,6 +47,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
 import {SlideshowModule} from 'ng-simple-slideshow';
 
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { PolicyComponent } from './register/policy/policy.component';
 // Configs
 
 let config = new AuthServiceConfig([
@@ -93,8 +94,10 @@ export function tokenGetter() {
     TripOwnerDetailsComponent,
     TripRequesterDetailsComponent,
     AdsDialogComponent,
+    PolicyComponent,
     ResetPasswordComponent
   ],
+  entryComponents: [PolicyComponent, AdsDialogComponent, RideModalComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,

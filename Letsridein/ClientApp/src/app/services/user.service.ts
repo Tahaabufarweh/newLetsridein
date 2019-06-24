@@ -53,7 +53,8 @@ export class UserService {
   updatePassword(user) {
     return this.httpClient.post(baseUrl + updatePassRoute, JSON.stringify(user), httpOptions);
   }
-    login(user) {
+  login(user) {
+    console.log(this.httpClient.post(baseUrl + "Login", JSON.stringify(user), httpOptions));
     return this.httpClient.post(baseUrl + "Login", JSON.stringify(user), httpOptions)
      }
 

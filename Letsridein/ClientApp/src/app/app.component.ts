@@ -8,6 +8,7 @@ import { interval, Subscription } from 'rxjs';
 import { error } from '@angular/compiler/src/util';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { AdminService } from './services/admin.service';
+import { OverlayContainer } from '@angular/cdk/overlay';
 declare interface RouteInfo {
   path: string;
   title: string;
@@ -29,7 +30,7 @@ export const ROUTES: RouteInfo[] = [
 export class AppComponent implements OnInit {
   deviceInfo = null;
   isMobile;
-  isAdmin;
+
   isDesktopDevice;
   epicFunction() {
     this.deviceInfo = this.deviceService.getDeviceInfo();
@@ -44,6 +45,7 @@ export class AppComponent implements OnInit {
   constructor(public translate: TranslateService,
     public AuthenticationService: AuthenticationService,
     private deviceService: DeviceDetectorService,
+    private overlay: OverlayContainer,
     private router: Router,
     private langService: InternationalizationService,
     private notificationService: NotificationService,
@@ -62,15 +64,34 @@ export class AppComponent implements OnInit {
     return false;
   }
   ngOnInit() {
-    if (this.AuthenticationService.isLoggedin() && this.AuthenticationService.getLoggedInUserId() == 1) {
-      this.isAdmin = true;
-    }
+    document.body.classList.add("light-custom-theme", "mat-app-background");
+    this.overlay.getContainerElement().classList.add("light-custom-theme");
     this.getUserNotifications()
     const source = interval(1000 * 60);
     this.menuItems = ROUTES.filter(menuItem => menuItem);
     source.subscribe(val => this.getUserNotifications());
+
   }
-  
+  toggleTheme(): void {
+    if (this.overlay.getContainerElement().classList.contains("custom-theme")) {
+      this.overlay.getContainerElement().classList.remove("custom-theme");
+      this.overlay.getContainerElement().classList.add("light-custom-theme");
+    } else if (this.overlay.getContainerElement().classList.contains("light-custom-theme")) {
+      this.overlay.getContainerElement().classList.remove("light-custom-theme");
+      this.overlay.getContainerElement().classList.add("custom-theme");
+    } else {
+      this.overlay.getContainerElement().classList.add("light-custom-theme");
+    }
+    if (document.body.classList.contains("custom-theme")) {
+      document.body.classList.remove("custom-theme");
+      document.body.classList.add("light-custom-theme");
+    } else if (document.body.classList.contains("light-custom-theme")) {
+      document.body.classList.remove("light-custom-theme");
+      document.body.classList.add("custom-theme");
+    } else {
+      document.body.classList.add("light-custom-theme");
+    }
+  }
   setPrefLang(value) {
     this.langService.setLang(value)
   }
@@ -80,9 +101,14 @@ export class AppComponent implements OnInit {
     }, error => { console.log("failed") }
     )
   }
+
   navigateToTrip(link)
   {
     this.router.navigate(['/' + link]);
+  }
+
+  isAdmin() {
+    return (this.AuthenticationService.isLoggedin() && this.AuthenticationService.getLoggedInUserId() == 1008) 
   }
   title = 'app';
   isRtl() {
