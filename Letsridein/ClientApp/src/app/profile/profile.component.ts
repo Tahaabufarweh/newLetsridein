@@ -202,7 +202,8 @@ export class ProfileComponent implements OnInit {
       }
       if (this.inter.getLanguage() == 'en') {
         this.body = 'Error in uploading your profile pic'
-      }
+        }
+      console.log(error)
       this.notificationService.createNotificationService('danger', '', this.body);
 
 

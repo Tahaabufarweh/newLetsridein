@@ -13,19 +13,19 @@
         <mat-list-item>
           <a mat-list-item [routerLink]="['/trips']" routerLinkActive="active-link">
             <i mat-list-icon class="material-icons" style="color:white !important">card_travel</i>
-            <p matLine *ngIf="isExpanded">{{ 'HOME.TripsLabel' | translate }}</p>
+            <p matLine *ngIf="isExpanded" style="color:white !important">{{ 'HOME.TripsLabel' | translate }}</p>
           </a>
         </mat-list-item>
         <mat-list-item>
           <a mat-list-item [routerLink]="['/new-trip']" routerLinkActive="active-link">
             <i mat-list-icon class="material-icons" style="color:white !important">directions_car</i>
-            <p matLine *ngIf="isExpanded">{{ 'HOME.newTripLabel' | translate }}</p>
+            <p matLine *ngIf="isExpanded" style="color:white !important">{{ 'HOME.newTripLabel' | translate }}</p>
           </a>
         </mat-list-item>
         <mat-list-item *ngIf="isAdmin()">
           <a mat-list-item [routerLink]="['/admin']" routerLinkActive="active-link">
             <i mat-list-icon class="material-icons" style="color:white !important">supervised_user_circle</i>
-            <p matLine *ngIf="isExpanded">{{ 'HOME.admin' | translate }}</p>
+            <p matLine *ngIf="isExpanded" style="color:white !important">{{ 'HOME.admin' | translate }}</p>
           </a>
         </mat-list-item>
       </mat-nav-list>

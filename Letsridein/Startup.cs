@@ -109,7 +109,7 @@ namespace Letsridein
             }
 
 
-         
+
             app.Use(async (context, next) =>
             {
                 if (context.Request.IsHttps)

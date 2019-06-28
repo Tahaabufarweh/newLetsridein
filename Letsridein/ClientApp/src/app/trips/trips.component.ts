@@ -95,6 +95,7 @@ export class TripsComponent implements OnInit {
   fillTable(filter = {} as any, pageNo , pageSize) {
     this.tripsService.getAllTrips(filter, pageNo, pageSize).subscribe(response => {
       this.allTrips = response;
+      console.log(this.allTrips)
     }, error => {
       console.log(error)
       })

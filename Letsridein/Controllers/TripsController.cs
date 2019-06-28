@@ -46,12 +46,13 @@ namespace Letsridein.Controllers
                 string vs = time;
                 _context.Trip.Add(trip);
                 await _context.SaveChangesAsync();
+                return Ok();
             }
             catch (Exception e)
             {
-                throw e;
+                return BadRequest(e);
             }
-            return Ok();
+          
         }
 
         /// <summary>
@@ -178,32 +179,38 @@ namespace Letsridein.Controllers
             try
             {
                 var totalItems = _context.Trip
-                                  .Where(x => x.StartDate >= DateTime.Now)
+                                 // .Where(x => x.StartDate >= DateTime.Now)
                                   .Count();
 
-                var trip = _context.Trip.Where(x => x.StartDate >= DateTime.Now)
-                                                                  .Include(x => x.Driver)
-                                                                  .OrderByDescending(x => x.StartDate).Skip((PageNo - 1) * PageSize).Take(PageSize);
+                var trip = _context.Trip.Where(x => (string.IsNullOrEmpty(Search.FromDest) || x.FromDestination.Contains(Search.FromDest))
+                                                   && (string.IsNullOrEmpty(Search.ToDest) || x.ToDestination.Contains(Search.ToDest))
+                                                   && (Search.StartTime == null || x.StartDate >= Search.StartTime)
+                                                   && (Search.PriceMin == null || x.Price >= Search.PriceMin)
+                                                   && (Search.PriceMax == null || x.Price <= Search.PriceMax))
+                                                    .Include(x => x.Driver)
+                                                    .OrderByDescending(x => x.StartDate)
+                                                    .OrderBy(y => y.StartTime).Skip((PageNo - 1) * PageSize).Take(PageSize);/**/
+                /**/
 
 
 
-                if(Search != null)
-                {
-                    if (Search.StartTime == null)
-                        trip = trip.Where(x => x.StartDate == Search.StartTime);
+                //if (Search != null)
+                //{
+                //    if (Search.StartTime == null)
+                //        trip = trip.Where(x => x.StartDate == Search.StartTime);
 
-                    if (Search.FromDest == null)
-                        trip = trip.Where(x => x.FromDestination.Contains(Search.FromDest));
+                //    if (Search.FromDest == null)
+                //        trip = trip.Where(x => x.FromDestination.Contains(Search.FromDest));
 
-                    if (Search.ToDest == null)
-                        trip = trip.Where(x => x.ToDestination.Contains(Search.ToDest));
+                //    if (Search.ToDest == null)
+                //        trip = trip.Where(x => x.ToDestination.Contains(Search.ToDest));
 
-                    if (Search.PriceMin == null)
-                        trip = trip.Where(x => x.Price >= Search.PriceMin);
+                //    if (Search.PriceMin == null)
+                //        trip = trip.Where(x => x.Price >= Search.PriceMin);
 
-                    if (Search.PriceMax == null)
-                        trip = trip.Where(x => x.Price <= Search.PriceMax);
-                }
+                //    if (Search.PriceMax == null)
+                //        trip = trip.Where(x => x.Price <= Search.PriceMax);
+                //}
 
                 if (trip == null)
                 {
@@ -225,6 +232,13 @@ namespace Letsridein.Controllers
             }
           
           
+        }
+
+        [HttpGet]
+        [Route("GetAllTrips")]
+        public IActionResult GetAllTrips() {
+            var trips = _context.Trip.ToList();
+            return Ok(trips);
         }
 
         /// <summary>

@@ -414,8 +414,10 @@
         [Route("PostFile/{userId}")]
         public async Task<IActionResult> PostFile(int userId, IFormFile File)
         {
-            // full path to file in temp location
-            string path = _hostingEnvironment.WebRootPath + "\\ProfilePictures\\" + userId;
+            try
+            {
+                // full path to file in temp location
+                string path = _hostingEnvironment.WebRootPath + "\\ProfilePictures\\" + userId;
             var User = _context.User.Find(userId);
             if (!Directory.Exists(path))
             {
@@ -426,29 +428,30 @@
             {
                 using (var stream = new FileStream(fullPath, FileMode.Create))
                 {
-                    try
-                    {
+                 
                         await File.CopyToAsync(stream);
                         User.ProfileImageName = "/ProfilePictures/" + userId + "/" + File.FileName;
 
                         _context.Entry(User).State = EntityState.Modified;
                         _context.SaveChanges();
-                    }
-                    catch (Exception e)
-                    {
-                        throw e;
-                    }
+                     
+
+                        // process uploaded files
+                        // Don't rely on or trust the FileName property without validation.
+                 
+                 
                 }
             }
-
-            object obj = new
+                object obj = new
+                {
+                    User.ProfileImageName
+                };
+                return Ok(obj);
+            }
+            catch (Exception e)
             {
-                User.ProfileImageName
-            };
-
-            // process uploaded files
-            // Don't rely on or trust the FileName property without validation.
-            return Ok(obj);
+                return BadRequest(e);
+            }
         }
 
         /// <summary>

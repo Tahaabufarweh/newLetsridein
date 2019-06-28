@@ -7,7 +7,7 @@ namespace Letsridein.Models
 {
     public class TripsPageModel
     {
-        public IEnumerable<Trip> Trips { get; set; }
+        public List<Trip> Trips { get; set; }
         public int? TotalTrips {get;set;}
     }
 }

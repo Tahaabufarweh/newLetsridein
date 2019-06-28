@@ -167,7 +167,7 @@ export class NewTripComponent {
     this.StartDate.setValue(new Date(this.StartDate.value));
     this.ExpectedArrivalTime.setValue(new Date(this.ExpectedArrivalTime.value));
     this.carColor.setValue(this.carColor.value);
-
+    console.log(JSON.stringify(this.TripsForm.value));
     this.tripsService.createNewTrip(this.TripsForm.value).subscribe(response => {
       if (this.inter.getLanguage() == 'ar') {
         this.title = 'تم التسجيل'
@@ -184,6 +184,7 @@ export class NewTripComponent {
       this.notificationService.createNotificationService('success', this.title, this.body);
       this.route.navigate(["/trips"]);
     }, error => {
+        console.log(error)
       if (this.inter.getLanguage() == 'ar') {
         this.title = 'لم يتم التسجيل '
         this.body = 'لم يتم تسجيل رحلتك بنجاح يرجى مراجعة الحقول '
