@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
 import { TranslateService } from '@ngx-translate/core';
 import { InternationalizationService } from '../services/internationalization.service';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -16,6 +17,21 @@ export class FilteringComponent implements OnInit {
     translate.use(localStorage.getItem('lang') !== null || localStorage.getItem('lang') !== null ? localStorage.getItem('lang') : 'en');
 
   }
+
+  @ViewChild("placesRef") placesRef: GooglePlaceDirective;
+  @ViewChild("placesRef") placesRef1: GooglePlaceDirective;
+
+  public handleFromAddressChange(address) {
+
+    this.FilterForm.get('FromDest').setValue(address.formatted_address)
+  }
+
+  public handleToAddressChange(address) {
+
+    this.FilterForm.get('ToDest').setValue(address.formatted_address)
+  }
+
+ 
   FilterForm = new FormGroup({
     FromDest: new FormControl(''),
     ToDest: new FormControl(''),

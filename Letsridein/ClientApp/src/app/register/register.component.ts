@@ -128,12 +128,18 @@ export class RegisterComponent implements OnInit {
   title;  
   body;
   CreateNewUser() {
+    let newUser = {
+      fullName: this.fullName.value,
+      email: this.email.value,
+      password: this.password.value,
+      username: this.username.value,
+      MobileNumber: this.filterItemsOfType(this.Country.value) + this.MobileNumber.value,
+      rePass: this.rePass.value,
+      Country: this.Country.value
+    }
     
-    let MobileNo = this.filterItemsOfType(this.Country.value) + this.MobileNumber.value;
     
-    this.signUpForm.controls['MobileNumber'].setValue(MobileNo);
-    
-    this.userService.createUser(this.signUpForm.value).subscribe(response => {
+    this.userService.createUser(newUser).subscribe(response => {
       if (this.inter.getLanguage() == 'ar')
       {
         this.title = 'تم التسجيل'

@@ -12,18 +12,34 @@
       </mat-card-header>
     </div>
 
-    <div class="col-md-3">
-      <button class="btn btn-danger btn-round mt-lg-5" mat-raised-button color="primary" (click)="openDialog()">
+  </div>
+  <br />
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoadingData"></mat-progress-bar>
+  <br />
+  <div class="row">
+    <div class="col-md-5">
+      <button mat-raised-button color="primary" (click)="openDialog()">
         {{ 'HOME.filterButton' | translate }} <mat-icon>filter_list</mat-icon>
       </button>
-
+      <button mat-raised-button color="primary" (click)="resetSearch()" style="margin-left:10px">
+        {{ 'HOME.ResetSearch' | translate }} <mat-icon>delete_forever</mat-icon>
+      </button>
 
     </div>
-
-
-
-
+    <div class="col-md-7" *ngIf="filter">
+      {{ 'HOME.SearchFields' | translate }} :
+      <ul *ngIf="filter">
+        <li *ngIf="filter.FromDest">{{ 'HOME.fromDest' | translate }} :{{filter.FromDest}}</li>
+        <li *ngIf="filter.ToDest">{{ 'HOME.toDest' | translate }} :{{filter.ToDest}}</li>
+        <li *ngIf="filter.StartTime">{{ 'NewTrip.StartDate' | translate }} :{{filter.StartTime | date}}</li>
+      </ul>
+    </div>
   </div>
+
+
+
+
+
   <br />
   <br />
   <div class="row">
@@ -62,27 +78,17 @@
 
   <simple-notifications></simple-notifications>
 </mat-card>
-
-
-<slideshow #slideshow
-           [imageUrls]="imageUrls"
-           [height]="height"
-           [minHeight]="minHeight"
-           [arrowSize]="arrowSize"
-           [showArrows]="showArrows"
-           [disableSwiping]="disableSwiping"
-           [autoPlay]="autoPlay"
-           [stopAutoPlayOnSlide]="stopAutoPlayOnSlide"
-           [debug]="debug"
-           [backgroundSize]="backgroundSize"
-           [backgroundPosition]="backgroundPosition"
-           [backgroundRepeat]="backgroundRepeat"
-           [showDots]="showDots"
-           [dotColor]="dotColor"
-           [showCaptions]="showCaptions"
-           [captionColor]="captionColor"
-           [captionBackground]="captionBackground"
-           [lazyLoad]="lazyLoad"
-           [hideOnNoSlides]="hideOnNoSlides"
-           [fullscreen]="fullscreen">
-</slideshow>
+<div class="row">
+  <div class="col-md-3">
+    <img *ngIf="AdsArrSize > 0" style="width:100%;" src="{{imageUrls[adsArrIndex[0]].url}}" alt="Alternate Text" />
+  </div>
+  <div class="col-md-3">
+    <img *ngIf="AdsArrSize > 0" style="width:100%;" src="{{imageUrls[adsArrIndex[1]].url}}" alt="Alternate Text" />
+  </div>
+  <div class="col-md-3">
+    <img *ngIf="AdsArrSize > 0" style="width:100%;" src="{{imageUrls[adsArrIndex[2]].url}}" alt="Alternate Text" />
+  </div>
+  <div class="col-md-3">
+    <img *ngIf="AdsArrSize > 0" style="width:100%;" src="{{imageUrls[adsArrIndex[3]].url}}" alt="Alternate Text" />
+  </div>
+</div>

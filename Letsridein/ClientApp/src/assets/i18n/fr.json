@@ -123,9 +123,9 @@
     "EnterResetKey": "Entrez votre clé de réinitialisation",
     "EnterNewPassword": "Entrez un nouveau mot de passe",
     "Forget Pass": "Mot de passe oublié? Réinitialiser",
-    "newTripNote": "Ne choisissez pas dans la liste si vous souhaitez conserver le texte que vous avez saisi"
-
-
+    "newTripNote": "Ne choisissez pas dans la liste si vous souhaitez conserver le texte que vous avez saisi",
+    "ResetSearch": "Réinitialiser les champs de recherche",
+    "SearchFields": "Champs de recherche"
 
   },
   "NewTrip": {

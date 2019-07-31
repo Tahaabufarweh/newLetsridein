@@ -123,17 +123,18 @@
     "EnterResetKey": "Enter Your Reset Key",
     "EnterNewPassword": "Enter New Password",
     "ForgetPass": "Forget password ? Reset",
-    "newTripNote": " Don't choose from the list if want to keep your text you have typed"
-
-
+    "newTripNote": " Don't choose from the list if want to keep your text you have typed",
+    "ResetSearch": "Reset Search Fields",
+    "SearchFields": "Search Fields"
 
   },
   "NewTrip": {
     "CarModel": "Car Model",
-    "CarBrand": "Car Brand",
+    "CarBrand": "Car Make",
     "CarColor": "Car Color",
     "StartDate": "Start Date",
-
+    "CarModelExample": "Example: Camry, Civic",
+    "CarBrandExample": "Example: Toyota , Honda",
     "manufacturingYear": "Manufacturing Year",
     "isSmoker": "Is Smoking Allowed ?",
     "isAnimal": "Is Animal Allowed ?"

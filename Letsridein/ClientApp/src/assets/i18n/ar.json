@@ -1,9 +1,11 @@
 {
   "NewTrip": {
-    "CarModel": "الموديل",
-    "CarBrand": "ماركة السيارة",
+    "CarModel": "طراز السيارة",
+    "CarBrand": "نوع السيارة",
+    "CarModelExample": "مثال: سيفيك, اوبتيما",
+    "CarBrandExample": "مثال: مرسيدس, هوندا, نيسان",
     "CarColor": "لون السيارة",
-    "StartDate": "تاريخ البداية",   
+    "StartDate": "تاريخ البداية",
     "manufacturingYear": "سنة الصنع",
     "isSmoker": "هل التدخين مسموح؟",
     "isAnimal": "هل الحيوانات مسموحة؟"
@@ -11,6 +13,8 @@
   },
   "HOME": {
     "on": "في",
+    "ResetSearch": "تفريغ حقول البحث",
+    "SearchFields": "حقول البحث",
     "#OfReports": ": عدد الابلاغات",
     "report": "ابلاغ",
     "#OfTrips": " : عدد الرحلات ",

@@ -423,12 +423,18 @@
             {
                 Directory.CreateDirectory(path);
             }
+
+
             string fullPath = Path.Combine(path, File.FileName);
-            if (File.Length > 0)
+          
+
+            
+
+                if (File.Length > 0)
             {
                 using (var stream = new FileStream(fullPath, FileMode.Create))
                 {
-                 
+                        
                         await File.CopyToAsync(stream);
                         User.ProfileImageName = "/ProfilePictures/" + userId + "/" + File.FileName;
 
@@ -442,6 +448,46 @@
                  
                 }
             }
+                object obj = new
+                {
+                    User.ProfileImageName
+                };
+                return Ok(obj);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpPost]
+        [Route("PostFileMobile/{userId}")]
+        public IActionResult PostFileMobile(int userId, [FromBody] string Img64String)
+        {
+            try
+            {
+                var bytes = Convert.FromBase64String(Img64String);
+                string filedir = _hostingEnvironment.WebRootPath + "\\ProfilePictures\\" + userId;
+                var User = _context.User.Find(userId);
+                if (!Directory.Exists(filedir))
+                { //check if the folder exists;
+                    Directory.CreateDirectory(filedir);
+                }
+                string file = Path.Combine(filedir, userId.ToString() + "photo.jpg");
+
+                if (bytes.Length > 0)
+                {
+                    using (var stream = new FileStream(file, FileMode.Create))
+                    {
+                        stream.Write(bytes, 0, bytes.Length);
+                        stream.Flush();
+                        User.ProfileImageName = "/ProfilePictures/" + userId + "/" + userId.ToString() + "photo.jpg";
+
+                        _context.Entry(User).State = EntityState.Modified;
+                        _context.SaveChanges();
+                    }
+                }
+
                 object obj = new
                 {
                     User.ProfileImageName

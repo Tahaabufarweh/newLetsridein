@@ -5,23 +5,19 @@
         <input matInput disabled value="{{ 'HOME.Destination' | translate }}">
       </mat-form-field>
     </div>
-    <div class="row mb-1 mx-1">
+    <div class="row mb-1 mx-1" >
       <mat-form-field class="m-1">
-        <input matInput formControlName="FromDest" placeholder="{{ 'HOME.fromDest' | translate }}">
+        <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleFromAddressChange($event)" formControlName="FromDest" placeholder="{{ 'HOME.fromDest' | translate }}">
       </mat-form-field>
       <mat-form-field class="m-1">
-        <input matInput formControlName="ToDest" placeholder="{{ 'HOME.toDest' | translate }}">
+        <input matInput  ngx-google-places-autocomplete #placesRef1="ngx-places" (onAddressChange)="handleToAddressChange($event)" formControlName="ToDest" placeholder="{{ 'HOME.toDest' | translate }}">
       </mat-form-field>
     </div>
 
-    <div class="row">
-      <mat-form-field class="w-100">
-        <input matInput disabled value="{{ 'HOME.Time' | translate }}">
-      </mat-form-field>
-    </div>
+
     <div class="row mb-1 mx-1">
       <mat-form-field class="m-1 w-100">
-        <input matInput [matDatepicker]="picker" formControlName="StartTime" placeholder="{{ 'HOME.StartTime' | translate }}">
+        <input matInput [matDatepicker]="picker" formControlName="StartTime" placeholder="{{ 'NewTrip.StartDate' | translate }}">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
 
@@ -29,12 +25,12 @@
 
     </div>
 
-    <div class="row">
+    <div class="row" [hidden]="1 == 1">
       <mat-form-field class="w-100">
         <input matInput disabled value="{{ 'HOME.price' | translate }}">
       </mat-form-field>
     </div>
-    <div class="row mb-1 mx-1">
+    <div class="row mb-1 mx-1" [hidden]="1 == 1">
       <mat-form-field class="m-1">
         <input matInput type="number" formControlName="PriceMin" placeholder="{{ 'HOME.minPrice' | translate }}">
       </mat-form-field>

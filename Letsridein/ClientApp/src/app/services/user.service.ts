@@ -44,7 +44,7 @@ export class UserService {
     return this.httpClient.get(baseUrl + getUsersRoute + "?username=" + filter + "&PageNo=" + pageNo + "&PageSize=" + pageSize);
   }
 
-    createUser(user: User) {
+    createUser(user) {
         return this.httpClient.post(baseUrl + signupRoute, JSON.stringify(user), httpOptions);
   }
   createSocialUser(user) {

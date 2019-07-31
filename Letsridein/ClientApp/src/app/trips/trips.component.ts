@@ -16,7 +16,8 @@ import { NotificationService } from '../services/notification.service';
 import { AdminService } from '../services/admin.service';
 import { IImage } from 'ng-simple-slideshow';
 import { forEach } from '@angular/router/src/utils/collection';
-
+import { NgImageSliderModule } from 'ng-image-slider';
+import { interval } from 'rxjs';
 @Component({
     selector: 'app-trips',
     templateUrl: './trips.component.html',
@@ -32,8 +33,12 @@ export class TripsComponent implements OnInit {
     /** trips ctor */
   fileNameDialogRef: MatDialogRef<FilteringComponent>;
   imageUrls: (string | IImage)[] = [
-
+    { url: 'https://cdn.vox-cdn.com/uploads/chorus_image/image/56748793/dbohn_170625_1801_0018.0.0.jpg', caption: 'The first slide', href: '#config' },
+   
   ];
+  AdsArrSize: number = 0;
+  AdsArrCurrentIndex: number = 0;
+
   height: string = '400px';
   minHeight: string;
   arrowSize: string = '30px';
@@ -55,7 +60,8 @@ export class TripsComponent implements OnInit {
   hideOnNoSlides: boolean = false;
   width: string = '100%';
   fullscreen: boolean = false;
-
+  isLoadingData = false;
+  public adsArrIndex = [0, 1, 2, 3];
   constructor(
     public dialog: MatDialog,
     private tripsService: TripsService,
@@ -72,37 +78,64 @@ export class TripsComponent implements OnInit {
     this.AuthenticationService.checkLogin();
   }
 
-
+  
   ngOnInit() {
+    const source = interval(1000 * 5);
     this.fillTable({}, 1, 10);
     this.getAllAds();
+    source.subscribe(val => this.changeAdsPicture());
   }
 
+  public changeAdsPicture() {
+    for (var index = 0; index < this.adsArrIndex.length; index++) {
+      if (this.adsArrIndex[index] == this.AdsArrSize || this.adsArrIndex[index] == this.AdsArrSize - 1) {
+        this.adsArrIndex[index] = 0;
+      }
+      else {
+        this.adsArrIndex[index] = this.adsArrIndex[index] + 1;
+      }
+
+    }
+   
+  }
+
+  
   public getAllAds() {
+
     this.adminService.getAds().subscribe(response => {
       this.ads = response;
+      console.log(this.ads)
       for (var image = 0; image < this.ads.length; image++) {
         let imageIn: IImage = {
           url: this.ads[image].imageName,
           href: this.ads[image].advLink
         };
+       
         this.imageUrls.push(imageIn);
       }
+      this.AdsArrSize = this.imageUrls.length;
+      console.log(this.imageUrls)
 
     }, error => {
     })
   }
-  fillTable(filter = {} as any, pageNo , pageSize) {
+
+ 
+  fillTable(filter = {} as any, pageNo, pageSize) {
+    this.isLoadingData = true;
     this.tripsService.getAllTrips(filter, pageNo, pageSize).subscribe(response => {
       this.allTrips = response;
-      console.log(this.allTrips)
+      this.isLoadingData = false;
     }, error => {
-      console.log(error)
+      this.isLoadingData = false;
       })
 
    
   }
-  
+
+  getImage(){
+
+  }
   navigateToDetails(id)
   {
     this.router.navigate(["/trip-details/" + id]);
@@ -136,14 +169,25 @@ export class TripsComponent implements OnInit {
 
 
   onPageChanged(page: PageEvent) {
-    this.fillTable({}, page.pageIndex + 1, page.pageSize)
+    console.log(this.filter)
+    this.fillTable(this.filter, page.pageIndex + 1, page.pageSize)
+  }
+
+  resetSearch() {
+    this.filter = {};
+    this.fillTable(this.filter, 1 , 10);
   }
 
 
   openDialog() {
     this.fileNameDialogRef = this.dialog.open(FilteringComponent);
+
     this.fileNameDialogRef.afterClosed().subscribe(
-      data => this.fillTable(data , 1 , 10)
+      data => {
+        this.fillTable(data, 1, 10)
+        this.filter = data;
+        console.log(this.filter)
+      }
     );    
   }
     

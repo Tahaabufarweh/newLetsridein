@@ -45,9 +45,10 @@ import { TripRequesterDetailsComponent } from './trip-requester-details/trip-req
 import { AdsDialogComponent } from './ads-dialog/ads-dialog.component';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import {SlideshowModule} from 'ng-simple-slideshow';
-
+import { SlickModule } from 'ngx-slick';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { PolicyComponent } from './register/policy/policy.component';
+import { NgImageSliderModule } from 'ng-image-slider';
 // Configs
 
 let config = new AuthServiceConfig([
@@ -104,6 +105,7 @@ export function tokenGetter() {
     GooglePlaceModule,
     AmazingTimePickerModule,
     BrowserAnimationsModule,
+    NgImageSliderModule,
     SlideshowModule,
     MatNativeDateModule,
     DeviceDetectorModule.forRoot(),
@@ -116,7 +118,7 @@ export function tokenGetter() {
     }),
     ReactiveFormsModule,
     DemoMaterialModule,
-    
+   
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -125,6 +127,7 @@ export function tokenGetter() {
       }
     }),
     FormsModule,
+    SlickModule.forRoot(),
     SimpleNotificationsModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: TripsComponent, pathMatch: 'full' },

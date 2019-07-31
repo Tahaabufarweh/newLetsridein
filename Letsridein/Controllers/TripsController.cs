@@ -179,8 +179,12 @@ namespace Letsridein.Controllers
             try
             {
                 var totalItems = _context.Trip
-                                 // .Where(x => x.StartDate >= DateTime.Now)
-                                  .Count();
+                                 .Where(x => (string.IsNullOrEmpty(Search.FromDest) || x.FromDestination.Contains(Search.FromDest))
+                                                   && (string.IsNullOrEmpty(Search.ToDest) || x.ToDestination.Contains(Search.ToDest))
+                                                   && (Search.StartTime == null || x.StartDate >= Search.StartTime)
+                                                   && (Search.PriceMin == null || x.Price >= Search.PriceMin)
+                                                   && (Search.PriceMax == null || x.Price <= Search.PriceMax))
+                                                   .Count();
 
                 var trip = _context.Trip.Where(x => (string.IsNullOrEmpty(Search.FromDest) || x.FromDestination.Contains(Search.FromDest))
                                                    && (string.IsNullOrEmpty(Search.ToDest) || x.ToDestination.Contains(Search.ToDest))
@@ -189,28 +193,7 @@ namespace Letsridein.Controllers
                                                    && (Search.PriceMax == null || x.Price <= Search.PriceMax))
                                                     .Include(x => x.Driver)
                                                     .OrderByDescending(x => x.StartDate)
-                                                    .OrderBy(y => y.StartTime).Skip((PageNo - 1) * PageSize).Take(PageSize);/**/
-                /**/
-
-
-
-                //if (Search != null)
-                //{
-                //    if (Search.StartTime == null)
-                //        trip = trip.Where(x => x.StartDate == Search.StartTime);
-
-                //    if (Search.FromDest == null)
-                //        trip = trip.Where(x => x.FromDestination.Contains(Search.FromDest));
-
-                //    if (Search.ToDest == null)
-                //        trip = trip.Where(x => x.ToDestination.Contains(Search.ToDest));
-
-                //    if (Search.PriceMin == null)
-                //        trip = trip.Where(x => x.Price >= Search.PriceMin);
-
-                //    if (Search.PriceMax == null)
-                //        trip = trip.Where(x => x.Price <= Search.PriceMax);
-                //}
+                                                    .Skip((PageNo - 1) * PageSize).Take(PageSize);
 
                 if (trip == null)
                 {

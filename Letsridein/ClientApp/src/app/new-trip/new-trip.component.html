@@ -114,6 +114,7 @@
             <div class="col-md-6">
               <mat-form-field class="col-md-12">
                 <input matInput placeholder="{{ 'NewTrip.CarBrand' | translate }}" formControlName="carBrand">
+                <mat-hint>{{ 'NewTrip.CarBrandExample' | translate }} </mat-hint>
               </mat-form-field>
             </div>
             <div class="col-md-4">
@@ -135,14 +136,13 @@
               </mat-form-field>
             </div>
           </div>
+          <br />
           <div class="row">
             <div class="col-md-4">
               <mat-form-field class="col-md-12">
                 <input matInput placeholder="{{ 'NewTrip.CarModel' | translate }}" formControlName="carModel">
-                <!--<mat-hint>For free rides type '0' in this field or leave it empty </mat-hint>-->
-                <mat-error *ngIf="carNo.touched && carNo.invalid">
-                  {{ 'HOME.carNorequired' | translate }}
-                </mat-error>
+                <mat-hint>{{ 'NewTrip.CarModelExample' | translate }} </mat-hint>
+               
               </mat-form-field>
             </div>
             <div class="col-md-4">
@@ -161,6 +161,7 @@
               </mat-form-field>
             </div>
           </div>
+          <br />
           <div class="row">
             <div class="col-md-12">
               <mat-form-field class="col-md-12">
