@@ -146,9 +146,13 @@
 
           <div class="row" *ngIf="getLang() == 'fr'">
             <div class="col-md-12">
-              ** En vous inscrivant sur ce site, vous êtes considéré comme OK sur 
+              ** En vous inscrivant sur ce site, vous êtes considéré comme OK sur
               <a (click)="openDialog()" style="color:blue; cursor:pointer">
-                les politiques
+                Termes et conditions de Letsridein
+              </a>
+              ,
+              <a (click)="navigateToPrivacyPolicy()" style="color:blue; cursor:pointer">
+                politique de confidentialité
               </a>
             </div>
           </div>
@@ -157,7 +161,11 @@
             <div class="col-md-12">
               ** By registering on this site you are deemed to be OK on
               <a (click)="openDialog()" style="color:blue; cursor:pointer">
-                Letsridein policies
+                Letsridein Terms And Conditions
+              </a>
+              ,
+              <a (click)="navigateToPrivacyPolicy()" style="color:blue; cursor:pointer">
+               Privacy Policy
               </a>
             </div>
           </div>
@@ -167,7 +175,11 @@
             <div class="col-md-6">
               بالتسجيل في هذا الموقع انت تعتبر موافق على
               <a (click)="openDialog()" style="color:blue;cursor:pointer">
-                سياسات الاستخدام
+                شروط وأحكام Letsridein
+              </a>
+              ،
+              <a (click)="navigateToPrivacyPolicy()" style="color:blue;cursor:pointer">
+               وسياسة الخصوصية
               </a>
             </div>
             <div class="col-md-6"></div>

@@ -68,6 +68,8 @@ export class RegisterComponent implements OnInit {
   openDialog() {
     const dialogRef = this.dialog.open(PolicyComponent);
   }
+  navigateToPrivacyPolicy() {
+    this.router.navigate(["/privacy-policy"]);  }
 
   ngOnInit() {
     

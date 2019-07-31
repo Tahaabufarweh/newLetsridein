@@ -49,6 +49,7 @@ import { SlickModule } from 'ngx-slick';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { PolicyComponent } from './register/policy/policy.component';
 import { NgImageSliderModule } from 'ng-image-slider';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 // Configs
 
 let config = new AuthServiceConfig([
@@ -96,7 +97,8 @@ export function tokenGetter() {
     TripRequesterDetailsComponent,
     AdsDialogComponent,
     PolicyComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    PrivacyPolicyComponent
   ],
   entryComponents: [PolicyComponent, AdsDialogComponent, RideModalComponent],
   imports: [
@@ -144,7 +146,8 @@ export function tokenGetter() {
       { path: 'ride', component: RideModalComponent },
       { path: 'report', component: ReportComponent },
       { path: 'ads', component: AdsDialogComponent },
-       { path: 'resetPassword', component: ResetPasswordComponent }
+      { path: 'resetPassword', component: ResetPasswordComponent },
+      { path: 'privacy-policy', component: PrivacyPolicyComponent }
 
     ])
   ],
