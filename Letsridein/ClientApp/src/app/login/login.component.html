@@ -11,8 +11,8 @@
 
       </mat-card-header>
       <div class="row d-flex justify-content-center">
-        <a class="btn btn-primary btn-circle btn-lg m-1" (click)="signInWithFB()"><i style="color:white !important" class="fa fa-facebook"></i></a>
-        <a class="btn btn-danger btn-circle btn-lg m-1" (click)="signInWithGoogle()"><i style="color:white !important" class="fa fa-google"></i></a>
+        <button class="btn btn-primary btn-circle btn-lg m-1" (click)="signInWithFB()" [disabled]="isLoading"><i style="color:white !important" class="fa fa-facebook"></i></button>
+        <button class="btn btn-danger btn-circle btn-lg m-1" (click)="signInWithGoogle()" [disabled]="isLoading"><i style="color:white !important" class="fa fa-google"></i></button>
       </div>
       <div class="row">
         <div class="col-md-4"><hr /></div>
@@ -56,7 +56,7 @@
 
         <div class="row">
           <div class="col-md-2">
-            <button mat-raised-button color="primary" (click)="login()">
+            <button mat-raised-button color="primary" (click)="login()" [disabled]="isLoading">
               {{ 'HOME.Login' | translate }}
             </button>
           </div>

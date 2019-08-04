@@ -18,7 +18,8 @@ import { SocialUser } from "angularx-social-login";
 })
 /** login component*/
 export class LoginComponent {
-  
+  public isLoading = false;
+  public loginCounter = 0;
     /** login ctor */
   loginForm = new FormGroup({
     username: new FormControl('', Validators.required),
@@ -55,11 +56,15 @@ export class LoginComponent {
   title;
   body;
   login() {
+    this.isLoading = true;
     this.userService.login(this.loginForm.value).subscribe(response => {
       let token = (<any>response).token;
       localStorage.setItem("jwt", token);
+      this.isLoading = false;
       this.router.navigate(["/"]);
     }, error => {
+        this.isLoading = false;
+
       if (this.inter.getLanguage() == 'ar') {
         this.title = 'خطأ بالتسجيل'
         this.body = 'اسم المستخدم او كلمة المرور خطأ'
@@ -78,16 +83,24 @@ export class LoginComponent {
    
   }
   public signinWithGoogle() {
+    this.isLoading = true;
     this.socialAuthService.authState.subscribe((user) => {
+      this.loginCounter++;
+      if (this.loginCounter == 1) {
       this.userService.createSocialUser(user).subscribe(res => {
+        this.isLoading = false;
+
         let token = (<any>res).token;
         localStorage.setItem("jwt", token);
         this.router.navigate(["/trips"]);
+        this.loginCounter--;
       }, error => {
-          
+          this.isLoading = false;
+          this.loginCounter--;
         })
-
-    });
+      }
+      });
+   
   }
 
   signInWithGoogle(): void {

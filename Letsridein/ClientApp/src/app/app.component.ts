@@ -53,7 +53,9 @@ export class AppComponent implements OnInit {
   ) {
    
     this.langService.getLanguage()
-    this.AuthenticationService.checkLogin();
+    if (this.router.url == "/privacy-policy") {
+      this.AuthenticationService.checkLogin();
+    }
     this.epicFunction();
   }
   

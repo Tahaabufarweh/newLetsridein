@@ -31,6 +31,8 @@ export interface Country {
 })
 /** register component*/
 export class RegisterComponent implements OnInit {
+  public isLoading = false;
+  public loginCounter = 0;
     /** register ctor */
   signUpForm = new FormGroup({
     fullName: new FormControl('', Validators.required),
@@ -75,15 +77,22 @@ export class RegisterComponent implements OnInit {
     
   }
   public signinWithGoogle() {
+    this.isLoading = true;
     this.socialAuthService.authState.subscribe((user) => {
-      this.userService.createSocialUser(user).subscribe(res => {
-        let token = (<any>res).token;
-        localStorage.setItem("jwt", token);
-        this.notificationService.createNotificationService('success', 'Signup Success', 'Your account has been created');
-        this.router.navigate(["/trips"]);
-      })
-      this.user = user;
-      this.loggedIn = (user != null);
+      this.loginCounter++;
+      if (this.loginCounter == 1) {
+        this.userService.createSocialUser(user).subscribe(res => {
+          this.isLoading = false;
+          let token = (<any>res).token;
+          localStorage.setItem("jwt", token);
+          this.notificationService.createNotificationService('success', 'Signup Success', 'Your account has been created');
+          this.router.navigate(["/trips"]);
+        }, error => {
+            this.isLoading = false;
+          })
+        this.user = user;
+        this.loggedIn = (user != null);
+      }
     });
   }
 
@@ -130,6 +139,7 @@ export class RegisterComponent implements OnInit {
   title;  
   body;
   CreateNewUser() {
+    this.isLoading = true;
     let newUser = {
       fullName: this.fullName.value,
       email: this.email.value,
@@ -142,6 +152,8 @@ export class RegisterComponent implements OnInit {
     
     
     this.userService.createUser(newUser).subscribe(response => {
+      this.isLoading = false;
+
       if (this.inter.getLanguage() == 'ar')
       {
         this.title = 'تم التسجيل'
@@ -156,12 +168,12 @@ export class RegisterComponent implements OnInit {
         this.body = 'Your account has been created'
       }
       this.notificationService.createNotificationService('success', this.title, this.body);
-
-     setTimeout(() => {
-        this.router.navigate(["/"]);
-      }, 5000);
+      this.router.navigate(["/"]);
+ 
       
     }, error => {
+        this.isLoading = true;
+
       var errormsg = error.error;
       if (this.inter.getLanguage() == 'ar') {
         this.title = 'فشل التسجيل'

@@ -90,11 +90,14 @@
                 {
                     user.Username = NewUser.Name;
                     user.Email = NewUser.Email;
-                    if (CheckUniqueUsername(user.Username))
+
+                    bool isEmailExist = CheckUniqueEmail(user.Email);
+                    bool isUsernameExist = CheckUniqueUsername(user.Email);
+                    if (isUsernameExist)
                     {
                         return BadRequest("Username is exist!");
                     }
-                    else if (CheckUniqueEmail(user.Email))
+                    else if (isEmailExist)
                     {
                         return BadRequest("Email is exist!");
                     }
@@ -563,14 +566,14 @@
 
         private bool CheckUniqueUsername(string Username)
         {
-            List<User> UsersList = _context.User.Where(user => user.Username.Trim().ToLower() == Username.Trim().ToLower()).ToList();
-            return UsersList.Count() > 0;
+            bool UsersList = _context.User.Where(user => user.Username.Trim().ToLower() == Username.Trim().ToLower()).Any();
+            return UsersList;
         }
 
         private bool CheckUniqueEmail(string Email)
         {
-            List<User> UsersList = _context.User.Where(user => user.Email.Trim().ToLower() == Email.Trim().ToLower()).ToList();
-            return UsersList.Count() > 0;
+            bool UsersList = _context.User.Where(user => user.Email.Trim().ToLower() == Email.Trim().ToLower()).Any();
+            return UsersList;
         }
         #endregion
     }
