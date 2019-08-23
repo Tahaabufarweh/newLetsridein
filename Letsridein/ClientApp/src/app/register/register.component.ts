@@ -35,10 +35,10 @@ export class RegisterComponent implements OnInit {
   public loginCounter = 0;
     /** register ctor */
   signUpForm = new FormGroup({
-    fullName: new FormControl('', Validators.required),
-    email: new FormControl('', [Validators.required, Validators.email]),
+    fullName: new FormControl(''),
+    email: new FormControl('', [Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-    username: new FormControl('', [Validators.required,Validators.minLength(6)]),
+    username: new FormControl('', Validators.required),
     MobileNumber: new FormControl('', Validators.required),
     rePass: new FormControl('', Validators.required),
     Country: new FormControl('', Validators.required)

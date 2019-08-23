@@ -65,7 +65,7 @@ namespace Letsridein
             services.AddMvc();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddMvc().AddJsonOptions(options => { options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; });
-            services.AddDbContext<LetsRideinContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<letsride_inContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             
 

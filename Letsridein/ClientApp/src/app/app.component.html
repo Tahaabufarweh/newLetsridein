@@ -1,31 +1,31 @@
 <body>
   <mat-sidenav-container [dir]="isRtl()" class="example-container" autosize>
-    <mat-sidenav #sidenav class="example-sidenav" mode="side" opened="true" *ngIf="!isLoginOrSignUp()">
+    <mat-sidenav #sidenav class="example-sidenav" mode="side" opened="true" *ngIf="!isLoginOrSignUp()" [style.background-color]="getThemeColor()"  >
       <mat-nav-list *ngIf="isMobile!==true">
         <mat-list-item>
           <button mat-icon-button (click)="isExpanded = !isExpanded">
-            <mat-icon *ngIf="!isExpanded && translate.currentLang !== 'ar'" style="color:white !important">chevron_right</mat-icon>
-            <mat-icon *ngIf="isExpanded  && translate.currentLang !== 'ar'" style="color:white !important">chevron_left</mat-icon>
-            <mat-icon *ngIf="!isExpanded && translate.currentLang === 'ar'" style="color:white !important">chevron_left</mat-icon>
-            <mat-icon *ngIf="isExpanded  && translate.currentLang === 'ar'" style="color:white !important">chevron_right</mat-icon>
+            <mat-icon *ngIf="!isExpanded && translate.currentLang !== 'ar'" [style.color]="getFontThemeColor()">chevron_right</mat-icon>
+            <mat-icon *ngIf="isExpanded  && translate.currentLang !== 'ar'" [style.color]="getFontThemeColor()">chevron_left</mat-icon>
+            <mat-icon *ngIf="!isExpanded && translate.currentLang === 'ar'" [style.color]="getFontThemeColor()">chevron_left</mat-icon>
+            <mat-icon *ngIf="isExpanded  && translate.currentLang === 'ar'" [style.color]="getFontThemeColor()">chevron_right</mat-icon>
           </button>
         </mat-list-item>
         <mat-list-item>
           <a mat-list-item [routerLink]="['/trips']" routerLinkActive="active-link">
-            <i mat-list-icon class="material-icons" style="color:white !important">card_travel</i>
-            <p matLine *ngIf="isExpanded" style="color:white !important">{{ 'HOME.TripsLabel' | translate }}</p>
+            <i mat-list-icon class="material-icons" [style.color]="getFontThemeColor()">card_travel</i>
+            <p matLine *ngIf="isExpanded" [style.color]="getFontThemeColor()">{{ 'HOME.TripsLabel' | translate }}</p>
           </a>
         </mat-list-item>
         <mat-list-item>
           <a mat-list-item [routerLink]="['/new-trip']" routerLinkActive="active-link">
-            <i mat-list-icon class="material-icons" style="color:white !important">directions_car</i>
-            <p matLine *ngIf="isExpanded" style="color:white !important">{{ 'HOME.newTripLabel' | translate }}</p>
+            <i mat-list-icon class="material-icons" [style.color]="getFontThemeColor()">directions_car</i>
+            <p matLine *ngIf="isExpanded" [style.color]="getFontThemeColor()">{{ 'HOME.newTripLabel' | translate }}</p>
           </a>
         </mat-list-item>
         <mat-list-item *ngIf="isAdmin()">
           <a mat-list-item [routerLink]="['/admin']" routerLinkActive="active-link">
-            <i mat-list-icon class="material-icons" style="color:white !important">supervised_user_circle</i>
-            <p matLine *ngIf="isExpanded" style="color:white !important">{{ 'HOME.admin' | translate }}</p>
+            <i mat-list-icon class="material-icons" [style.color]="getFontThemeColor()">supervised_user_circle</i>
+            <p matLine *ngIf="isExpanded" [style.color]="getFontThemeColor()">{{ 'HOME.admin' | translate }}</p>
           </a>
         </mat-list-item>
       </mat-nav-list>
@@ -33,7 +33,7 @@
 
     <div class="example-sidenav-content">
       <mat-toolbar color="primary" style="margin-bottom:10px;">
-        <img src="pic1.png" height="70" width="70" />
+        <img src="/letsrideinlogo.png" height="50" width="55" />
         <span class="example-spacer"></span>
         <mat-list-item *ngIf="isMobile!=false" class="mr-3">
           <a mat-list-item [routerLink]="['/trips']" routerLinkActive="active-link">
@@ -47,9 +47,24 @@
             <p matLine *ngIf="isExpanded">{{ 'HOME.newTripLabel' | translate }}</p>
           </a>
         </mat-list-item>
-        <button mat-mini-fab (click)="toggleTheme()" style="margin-right:8px" matTooltip="Change Theme colors!">
+        <button mat-mini-fab [matMenuTriggerFor]="menuTheme" style="margin-right:8px" matTooltip="Change Theme colors!">
           <mat-icon aria-label="Example icon-button with a heart icon">color_lens</mat-icon>
         </button>
+        <mat-menu #menuTheme="matMenu">
+          <button mat-menu-item (click)="changeThemeColor('custom-theme')">
+            <mat-icon style="color:#B71C1C">format_color_fill</mat-icon>
+            <span>Red</span>
+          </button>
+          <button mat-menu-item (click)="changeThemeColor('third-theme')">
+            <mat-icon style="color:#673AB7">format_color_fill</mat-icon>
+            <span>Purple</span>
+          </button>
+          <button mat-menu-item (click)="changeThemeColor('light-custom-theme')">
+            <mat-icon style="color:#00E5FF">format_color_fill</mat-icon>
+            <span>Cyan</span>
+          </button>
+
+        </mat-menu>
         <button mat-icon-button [matMenuTriggerFor]="menuNotify" *ngIf="this.AuthenticationService.isLoggedin()">
           <mat-icon [matBadge]="userNotifications?.length" matBadgeColor="warn">notification_important</mat-icon>
         </button>
@@ -92,6 +107,25 @@
           <button mat-menu-item (click)="translate.use('en'); setPrefLang('en')">
             <span>English</span>
           </button>
+          <button mat-menu-item (click)="translate.use('sp'); setPrefLang('sp')">
+            <span>Spanish</span>
+          </button>
+          <button mat-menu-item (click)="translate.use('tr'); setPrefLang('tr')">
+            <span>Turkish</span>
+          </button>
+          <button mat-menu-item (click)="translate.use('gr'); setPrefLang('gr')">
+            <span>German</span>
+          </button>
+          <button mat-menu-item (click)="translate.use('pr'); setPrefLang('pr')">
+            <span>Portuguese</span>
+          </button>
+          <button mat-menu-item (click)="translate.use('Hindi'); setPrefLang('Hindi')">
+            <span>Hindi</span>
+          </button>
+          <button mat-menu-item (click)="translate.use('persian'); setPrefLang('persian')">
+            <span>Persian</span>
+          </button>
+      
         </mat-menu>
 
 

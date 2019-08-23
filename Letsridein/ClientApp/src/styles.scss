@@ -1,5 +1,6 @@
 @import 'custom-theme.scss';
 @import 'light-custom-theme.scss';
+@import 'third-theme.scss';
 @import '~@angular/material/theming';
 @include mat-core();
 
@@ -9,6 +10,10 @@
 
 .light-custom-theme {
   @include angular-material-theme($light-custom-theme);
+}
+
+.third-theme {
+  @include angular-material-theme($third-theme);
 }
 
 body {

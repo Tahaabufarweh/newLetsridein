@@ -10,7 +10,7 @@ namespace Letsridein.Models
         public DateTime RequestDate { get; set; }
         public string PassengerNote { get; set; }
         public int Status { get; set; }
-        public int? PaymentMethod { get; set; }
+        public int? NumberOfSeats { get; set; }
         public int TripId { get; set; }
 
         public User Passenger { get; set; }

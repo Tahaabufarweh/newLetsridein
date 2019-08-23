@@ -16,11 +16,11 @@ namespace Letsridein.Controllers
     public class TripsController : ControllerBase
     {
         #region Variables
-        private readonly LetsRideinContext _context;
+        private readonly letsride_inContext _context;
         #endregion
 
         #region Constructor
-        public TripsController(LetsRideinContext context)
+        public TripsController(letsride_inContext context)
         {
             _context = context;
         }
@@ -43,6 +43,7 @@ namespace Letsridein.Controllers
                 trip.Status = (int)TripStatus.Opened;
                 trip.IsArrived = false;
                 string time = TimeSpan.Parse(trip.StartTime).ToString();
+                trip.StartTime = time;
                 string vs = time;
                 _context.Trip.Add(trip);
                 await _context.SaveChangesAsync();
@@ -53,6 +54,29 @@ namespace Letsridein.Controllers
                 return BadRequest(e);
             }
           
+        }
+
+        [HttpPost]
+        [Route("SaveCarInfo")]
+        public async Task<IActionResult> SaveCarInfo([FromBody]User user)
+        {
+
+            try
+            {
+                User user1 = _context.User.FirstOrDefault(x => x.Id == user.Id);
+                user1.ManufacturingYear = user.ManufacturingYear;
+                user1.CarBrand = user.CarBrand;
+                user1.CarColor = user.CarInfo;
+                user1.CarModel = user.CarModel;
+                user1.CarNumber = user.CarNumber;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+
         }
 
         /// <summary>
@@ -157,10 +181,7 @@ namespace Letsridein.Controllers
                 return NotFound();
             }
 
-            if(User.CarBrand == null && User.CarColor == null && User.CarModel == null && User.ManufacturingYear == null)
-            {
-                return BadRequest("You Don't Have Any Request");
-            }
+      
 
             return User;
         }
@@ -178,7 +199,7 @@ namespace Letsridein.Controllers
          
             try
             {
-                var totalItems = _context.Trip
+                int totalItems = _context.Trip
                                  .Where(x => (string.IsNullOrEmpty(Search.FromDest) || x.FromDestination.Contains(Search.FromDest))
                                                    && (string.IsNullOrEmpty(Search.ToDest) || x.ToDestination.Contains(Search.ToDest))
                                                    && (Search.StartTime == null || x.StartDate >= Search.StartTime)
@@ -186,7 +207,7 @@ namespace Letsridein.Controllers
                                                    && (Search.PriceMax == null || x.Price <= Search.PriceMax))
                                                    .Count();
 
-                var trip = _context.Trip.Where(x => (string.IsNullOrEmpty(Search.FromDest) || x.FromDestination.Contains(Search.FromDest))
+                IQueryable<Trip> trip = _context.Trip.Where(x => (string.IsNullOrEmpty(Search.FromDest) || x.FromDestination.Contains(Search.FromDest))
                                                    && (string.IsNullOrEmpty(Search.ToDest) || x.ToDestination.Contains(Search.ToDest))
                                                    && (Search.StartTime == null || x.StartDate >= Search.StartTime)
                                                    && (Search.PriceMin == null || x.Price >= Search.PriceMin)
@@ -220,7 +241,7 @@ namespace Letsridein.Controllers
         [HttpGet]
         [Route("GetAllTrips")]
         public IActionResult GetAllTrips() {
-            var trips = _context.Trip.ToList();
+            List<Trip> trips = _context.Trip.ToList();
             return Ok(trips);
         }
 
@@ -233,7 +254,7 @@ namespace Letsridein.Controllers
         [Route("GetTripById/{TripId}")]
         public IActionResult GetTripByTripId(int TripId)
         {
-            var trip = _context.Trip.Where(x => x.Id == TripId)
+            Trip trip = _context.Trip.Where(x => x.Id == TripId)
                         .Include(x=>x.Driver)
                         .Include(x=>x.TripRequest)
                         .Include("TripRequest.Passenger")

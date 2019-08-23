@@ -22,13 +22,15 @@
       <form [formGroup]="loginForm">
         <br />
         <div class="row">
-          <div class="col-md-3"></div>
+          <div class="col-md-2"></div>
 
-          <div class="col-md-6">
+          <div class="col-md-8">
 
-            <mat-form-field>
+            <mat-form-field class="col-md-12">
               <input matInput placeholder="{{ 'HOME.Usernameoremail' | translate }}" formControlName="username" type="text">
-
+              <mat-hint>
+                Add country code to mobile number
+              </mat-hint>
               <mat-error *ngIf="username.touched && username.invalid">
                 {{ 'HOME.usernameisrequired' | translate }}
               </mat-error>
@@ -40,9 +42,9 @@
         <br />
         <br />
         <div class="row">
-          <div class="col-md-3"></div>
-          <div class="col-md-6">
-            <mat-form-field>
+          <div class="col-md-2"></div>
+          <div class="col-md-8">
+            <mat-form-field class="col-md-12">
               <input matInput placeholder="{{ 'HOME.password' | translate }}" formControlName="password" type="password">
 
               <mat-error *ngIf="password.touched && password.invalid">
@@ -51,7 +53,15 @@
             </mat-form-field>
           </div>
         </div>
-       
+        <div class="row">
+          <div class="col-md-12">
+            <a routerLink="/register">
+          
+              {{ 'HOME.CreateNewAccount' | translate }}
+            </a>
+          </div>
+          
+        </div>
         <hr />
 
         <div class="row">
@@ -60,8 +70,8 @@
               {{ 'HOME.Login' | translate }}
             </button>
           </div>
-          <div class="col-md-4"></div>
-          <div class="col-md-2">
+          <div class="col-md-2"></div>
+          <div class="col-md-5">
             <button color="primary" mat-raised-button (click)="navigateToReset()">{{ 'HOME.ForgetPass' | translate }}</button>
 
           </div>

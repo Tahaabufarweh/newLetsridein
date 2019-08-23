@@ -12,8 +12,8 @@ namespace Letsridein.Controllers
     [ApiController]
     public class ReportsController : ControllerBase
     {
-        private readonly LetsRideinContext _context;
-        public ReportsController(LetsRideinContext context)
+        private readonly letsride_inContext _context;
+        public ReportsController(letsride_inContext context)
         {
             _context = context;
         }

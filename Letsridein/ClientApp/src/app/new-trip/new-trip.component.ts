@@ -8,6 +8,7 @@ import { AuthenticationService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../services/notification.service';
 import { error } from 'util';
+import { UserService } from '../services/user.service';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class NewTripComponent {
 
     this.CarInfo.setValue(address.formatted_address)
   }
-  constructor(public translate: TranslateService, private inter: InternationalizationService, private tripsService: TripsService, public AuthenticationService: AuthenticationService, private route: Router, private notificationService: NotificationService) {
+  constructor(public translate: TranslateService, private userService: UserService, private inter: InternationalizationService, private tripsService: TripsService, public AuthenticationService: AuthenticationService, private route: Router, private notificationService: NotificationService) {
     this.AuthenticationService.checkLogin();
     translate.use(localStorage.getItem('lang') !== null || localStorage.getItem('lang') !== null ? localStorage.getItem('lang') : 'en');
 
@@ -53,6 +54,8 @@ export class NewTripComponent {
       this.carColor.setValue(this.activeUser.carColor);
       this.carModel.setValue(this.activeUser.carModel);
       this.manufacturingYear.setValue(this.activeUser.manufacturingYear);
+      this.carNo.setValue(this.activeUser.carNumber);
+      console.log(response)
     })
   }
   TripsForm = new FormGroup({
@@ -167,7 +170,6 @@ export class NewTripComponent {
     this.StartDate.setValue(new Date(this.StartDate.value));
     this.ExpectedArrivalTime.setValue(new Date(this.ExpectedArrivalTime.value));
     this.carColor.setValue(this.carColor.value);
-    console.log(JSON.stringify(this.TripsForm.value));
     this.tripsService.createNewTrip(this.TripsForm.value).subscribe(response => {
       if (this.inter.getLanguage() == 'ar') {
         this.title = 'تم التسجيل'
@@ -182,9 +184,24 @@ export class NewTripComponent {
         this.body = 'Your trip has been added successfully'
       }
       this.notificationService.createNotificationService('success', this.title, this.body);
+      console.log(this.activeUser)
+      if (this.activeUser.carBrand == null || this.activeUser.carColor == null || this.activeUser.carModel == null || this.activeUser.carNumber == null || this.activeUser.manufacturingYear == null) {
+        this.activeUser.carBrand = this.carBrand.value;
+        this.activeUser.carColor = this.carColor.value;
+        this.activeUser.carModel = this.carModel.value;
+        this.activeUser.manufacturingYear = this.manufacturingYear.value;
+        this.activeUser.carNumber = this.carNo.value;
+        console.log(this.activeUser)
+        this.userService.updateUserInfo(this.activeUser).subscribe(response => {
+          console.log(response)
+        }, error => {
+          console.log(error)
+
+        })
+      }
       this.route.navigate(["/trips"]);
+
     }, error => {
-        console.log(error)
       if (this.inter.getLanguage() == 'ar') {
         this.title = 'لم يتم التسجيل '
         this.body = 'لم يتم تسجيل رحلتك بنجاح يرجى مراجعة الحقول '
@@ -197,8 +214,8 @@ export class NewTripComponent {
         this.title = "Trip does not added"
         this.body = 'Your trip has not been added successfully,please check your fields'
       }
-      this.notificationService.createNotificationService('danger', this.title, this.body);
-
+        this.notificationService.createNotificationService('error', this.title, this.body);
+    
       })
   }
 }

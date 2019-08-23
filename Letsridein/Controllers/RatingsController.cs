@@ -14,9 +14,9 @@ namespace Letsridein.Controllers
     [ApiController]
     public class RatingsController : ControllerBase
     {
-        private readonly LetsRideinContext _context;
+        private readonly letsride_inContext _context;
 
-        public RatingsController(LetsRideinContext context)
+        public RatingsController(letsride_inContext context)
         {
             _context = context;
         }

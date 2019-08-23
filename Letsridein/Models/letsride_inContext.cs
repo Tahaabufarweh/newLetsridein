@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Letsridein.Models
 {
-    public partial class LetsRideinContext : DbContext
+    public partial class letsride_inContext : DbContext
     {
-        public LetsRideinContext()
+        public letsride_inContext()
         {
         }
 
-        public LetsRideinContext(DbContextOptions<LetsRideinContext> options)
+        public letsride_inContext(DbContextOptions<letsride_inContext> options)
             : base(options)
         {
         }
@@ -28,6 +28,7 @@ namespace Letsridein.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("data source=nl1-wsq1.a2hosting.com;initial catalog=letsride_in;User ID=letsride_has; Password=has@07$a2;MultipleActiveResultSets=True;App=EntityFramework&quot;");
             }
         }
@@ -102,9 +103,7 @@ namespace Letsridein.Models
 
                 entity.Property(e => e.CarColor).HasMaxLength(50);
 
-                entity.Property(e => e.CarInfo)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.Property(e => e.CarInfo).IsRequired();
 
                 entity.Property(e => e.CarNo)
                     .IsRequired()
@@ -112,9 +111,7 @@ namespace Letsridein.Models
 
                 entity.Property(e => e.ExpectedArrivalTime).HasColumnType("datetime");
 
-                entity.Property(e => e.FromDestination)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.Property(e => e.FromDestination).IsRequired();
 
                 entity.Property(e => e.IsAnimals).HasColumnName("isAnimals");
 
@@ -132,9 +129,7 @@ namespace Letsridein.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.ToDestination)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.Property(e => e.ToDestination).IsRequired();
 
                 entity.HasOne(d => d.Driver)
                     .WithMany(p => p.Trip)

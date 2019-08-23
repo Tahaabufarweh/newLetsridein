@@ -17,7 +17,7 @@
 }
 .mat-drawer.mat-drawer-side {
   z-index: 2;
-  background-color: #303F9F;
+  
   color: white !important;
 }
 .mat-list-item {

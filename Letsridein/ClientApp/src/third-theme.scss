@@ -1,0 +1,5 @@
+@import '~@angular/material/theming';
+$third-theme-primary: mat-palette($mat-deep-purple, 600);
+$third-theme-accent: mat-palette($mat-deep-orange, A700, A100, A400);
+$third-theme-warn: mat-palette($mat-red);
+$third-theme: mat-light-theme($third-theme-primary, $third-theme-accent, $third-theme-warn);

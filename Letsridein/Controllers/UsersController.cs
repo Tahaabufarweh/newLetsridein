@@ -26,13 +26,13 @@
     {
         #region Variables
         private IHostingEnvironment _hostingEnvironment;
-        private readonly LetsRideinContext _context;
+        private readonly letsride_inContext _context;
         public ISmsSender _sender;
         public EmailSender _emailSender;
         #endregion
 
         #region Constructor
-        public UsersController(LetsRideinContext context, IHostingEnvironment hostingEnvironment,ISmsSender sender,EmailSender emailSender)
+        public UsersController(letsride_inContext context, IHostingEnvironment hostingEnvironment,ISmsSender sender,EmailSender emailSender)
         {
             _context = context;
             _hostingEnvironment = hostingEnvironment;
@@ -53,22 +53,22 @@
         [Route("SignUp")]
         public async Task<ActionResult<User>> SignUp([FromBody] User NewUser)
         {
-            if (CheckUniqueUsername(NewUser.Username))
-            {
-                return BadRequest("Username is exist!");
-            }
-            else if (CheckUniqueEmail(NewUser.Email))
-            {
-                return BadRequest("Email is exist!");
-            }
+            //if (CheckUniqueUsername(NewUser.Username))
+            //{
+            //    return BadRequest("Username is exist!");
+            //}
+            //else if (CheckUniqueEmail(NewUser.Email))
+            //{
+            //    return BadRequest("Email is exist!");
+            //}
 
-            else
-            {
+            //else
+            //{
                 NewUser.Password = Encrypt(NewUser.Password);
                 _context.User.Add(NewUser);
                 await _context.SaveChangesAsync();
                 return CreatedAtAction("GetUser", new { id = NewUser.Id }, NewUser);
-            }
+            //}
         }
         /// <seealso cref="https://www.youtube.com/watch?v=6cV1ei-U3sI&list=RDoTLmXyjOobw&index=2"/>
         /// <summary>
@@ -91,16 +91,16 @@
                     user.Username = NewUser.Name;
                     user.Email = NewUser.Email;
 
-                    bool isEmailExist = CheckUniqueEmail(user.Email);
-                    bool isUsernameExist = CheckUniqueUsername(user.Email);
-                    if (isUsernameExist)
-                    {
-                        return BadRequest("Username is exist!");
-                    }
-                    else if (isEmailExist)
-                    {
-                        return BadRequest("Email is exist!");
-                    }
+                    //bool isEmailExist = CheckUniqueEmail(user.Email);
+                    //bool isUsernameExist = CheckUniqueUsername(user.Email);
+                    //if (isUsernameExist)
+                    //{
+                    //    return BadRequest("Username is exist!");
+                    //}
+                    //else if (isEmailExist)
+                    //{
+                    //    return BadRequest("Email is exist!");
+                    //}
 
                     user.ProfileImageName = NewUser.PhotoUrl;
                     _context.User.Add(user);
@@ -323,7 +323,16 @@
             {
                 return BadRequest("Invalid client request");
             }
-            var userInDb = _context.User.Where(u => u.Username.Trim().ToLower() == user.Username.Trim().ToLower() && Decrypt(u.Password) == user.Password).FirstOrDefault();
+            string username = user.Username.Trim().ToLower();
+            if(username.StartsWith("+"))
+            {
+                username = username.Substring(1, username.Length -1);
+            }
+            else if(username.StartsWith("00"))
+            {
+                username = username.Substring(2, username.Length - 2);
+            }
+                var userInDb = _context.User.Where(u => (u.Email.Trim().ToLower() == user.Username.Trim().ToLower() || u.MobileNumber.Trim().ToLower().Substring(1, u.MobileNumber.Length -1) == username) && Decrypt(u.Password) == user.Password).FirstOrDefault();
             if (userInDb != null)
             {
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("LitsRideSecurity@hasanDaaja"));
@@ -374,31 +383,41 @@
         [Route("UpdateUserInfo")]
         public async Task<ActionResult<User>> UpdateUserInfo([FromBody] User NewUserInfo)
         {
-            User OldUser = _context.User.Where(user => user.Id == NewUserInfo.Id).FirstOrDefault();
-            if (OldUser == null)
+            try
             {
-                return BadRequest("Invalid client request");
-            }
-            OldUser.FullName = NewUserInfo.FullName;
-            OldUser.Gender = NewUserInfo.Gender;
-            OldUser.MobileNumber = NewUserInfo.MobileNumber;
-            OldUser.CarNumber = NewUserInfo.CarNumber;
-            OldUser.BirthDate = NewUserInfo.BirthDate;
-            OldUser.CarInfo = NewUserInfo.CarInfo;
-            OldUser.Country = NewUserInfo.Country;
-            OldUser.CarBrand = NewUserInfo.CarBrand;
-            OldUser.CarColor = NewUserInfo.CarColor;
-            OldUser.ManufacturingYear = NewUserInfo.ManufacturingYear;
-            OldUser.CarModel = NewUserInfo.CarModel;
-            await _context.SaveChangesAsync();
+                User OldUser = _context.User.Where(user => user.Id == NewUserInfo.Id).FirstOrDefault();
+                if (OldUser == null)
+                {
+                    return BadRequest("Invalid client request");
+                }
+                OldUser.FullName = NewUserInfo.FullName;
+                OldUser.Gender = NewUserInfo.Gender;
+                OldUser.MobileNumber = NewUserInfo.MobileNumber;
+                OldUser.CarNumber = NewUserInfo.CarNumber;
+                OldUser.BirthDate = NewUserInfo.BirthDate;
+                OldUser.CarInfo = NewUserInfo.CarInfo;
+                OldUser.Country = NewUserInfo.Country;
+                OldUser.CarBrand = NewUserInfo.CarBrand;
+                OldUser.CarColor = NewUserInfo.CarColor;
+                OldUser.ManufacturingYear = NewUserInfo.ManufacturingYear;
+                OldUser.CarModel = NewUserInfo.CarModel;
+                await _context.SaveChangesAsync();
 
-            return Ok(_context.User.Where(x => x.Id == NewUserInfo.Id)
-                     .Include(x => x.RatingRatedUserNavigation)
-                     .Include("RatingRatedUserNavigation.User")
-                     .Include(x => x.TripRequest)
-                     .Include("TripRequest.Passenger")
-                     .Include(x => x.Trip)
-                     .FirstOrDefault());
+                return Ok(_context.User.Where(x => x.Id == NewUserInfo.Id)
+                         .Include(x => x.RatingRatedUserNavigation)
+                         .Include("RatingRatedUserNavigation.User")
+                         .Include(x => x.TripRequest)
+                         .Include("TripRequest.Passenger")
+                         .Include(x => x.Trip)
+                         .FirstOrDefault());
+
+            }
+            catch (Exception e)
+            {
+
+               return BadRequest(e);
+            }
+
         }
 
         /// <summary>

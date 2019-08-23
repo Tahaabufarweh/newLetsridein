@@ -13,9 +13,9 @@ namespace Letsridein.Controllers
     [ApiController]
     public class NotificationsController : ControllerBase
     {
-        private readonly LetsRideinContext _context;
+        private readonly letsride_inContext _context;
 
-        public NotificationsController(LetsRideinContext context)
+        public NotificationsController(letsride_inContext context)
         {
             _context = context;
         }

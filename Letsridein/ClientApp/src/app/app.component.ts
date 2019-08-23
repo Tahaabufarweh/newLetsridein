@@ -34,11 +34,13 @@ export class AppComponent implements OnInit {
   isDesktopDevice;
   epicFunction() {
     this.deviceInfo = this.deviceService.getDeviceInfo();
-    this.isMobile = this.deviceService.isMobile();    
+    this.isMobile = this.deviceService.isMobile();
     this.isDesktopDevice = this.deviceService.isDesktop();
   }
+  ThemeColor = "";
+  fontThemeColor = "";
   menuItems: any[];
-  public userNotifications : any = [];
+  public userNotifications: any = [];
   intervalId: number;
   @Input() themeColor = '';
 
@@ -51,14 +53,14 @@ export class AppComponent implements OnInit {
     private notificationService: NotificationService,
     private adminService: AdminService
   ) {
-   
+
     this.langService.getLanguage()
     if (this.router.url == "/privacy-policy") {
       this.AuthenticationService.checkLogin();
     }
     this.epicFunction();
   }
-  
+
   isLoginOrSignUp() {
     if (this.router.url == "/register" || this.router.url == "/login") {
       return true;
@@ -66,8 +68,15 @@ export class AppComponent implements OnInit {
     return false;
   }
   ngOnInit() {
-    document.body.classList.add("light-custom-theme", "mat-app-background");
-    this.overlay.getContainerElement().classList.add("light-custom-theme");
+    let themeToken = localStorage.getItem("theme");
+    if (themeToken) {
+      document.body.classList.add(themeToken, "mat-app-background");
+      this.overlay.getContainerElement().classList.add(themeToken);
+    }
+    else {
+      document.body.classList.add("custom-theme", "mat-app-background");
+      this.overlay.getContainerElement().classList.add("custom-theme");
+    }
     this.getUserNotifications()
     const source = interval(1000 * 60);
     this.menuItems = ROUTES.filter(menuItem => menuItem);
@@ -75,28 +84,12 @@ export class AppComponent implements OnInit {
 
   }
   toggleTheme(): void {
-    if (this.overlay.getContainerElement().classList.contains("custom-theme")) {
-      this.overlay.getContainerElement().classList.remove("custom-theme");
-      this.overlay.getContainerElement().classList.add("light-custom-theme");
-    } else if (this.overlay.getContainerElement().classList.contains("light-custom-theme")) {
-      this.overlay.getContainerElement().classList.remove("light-custom-theme");
-      this.overlay.getContainerElement().classList.add("custom-theme");
-    } else {
-      this.overlay.getContainerElement().classList.add("light-custom-theme");
-    }
-    if (document.body.classList.contains("custom-theme")) {
-      document.body.classList.remove("custom-theme");
-      document.body.classList.add("light-custom-theme");
-    } else if (document.body.classList.contains("light-custom-theme")) {
-      document.body.classList.remove("light-custom-theme");
-      document.body.classList.add("custom-theme");
-    } else {
-      document.body.classList.add("light-custom-theme");
-    }
+    
   }
   setPrefLang(value) {
     this.langService.setLang(value)
   }
+
   getUserNotifications() {
     this.notificationService.getUserNotification(this.AuthenticationService.getLoggedInUserId()).subscribe(response => {
       this.userNotifications = response;
@@ -104,15 +97,64 @@ export class AppComponent implements OnInit {
     )
   }
 
-  navigateToTrip(link)
-  {
+  changeThemeColor(themeColor : string) {
+    if (themeColor == "light-custom-theme") {
+      this.overlay.getContainerElement().classList.remove("custom-theme");
+      this.overlay.getContainerElement().classList.remove("third-theme");
+
+      this.overlay.getContainerElement().classList.add("light-custom-theme");
+      document.body.classList.remove("custom-theme");
+      document.body.classList.remove("third-theme");
+
+      document.body.classList.add("light-custom-theme");
+      this.themeColor = "white"
+    } else if (themeColor == "custom-theme") {
+      this.overlay.getContainerElement().classList.remove("light-custom-theme");
+      this.overlay.getContainerElement().classList.remove("third-theme");
+      this.overlay.getContainerElement().classList.add("custom-theme");
+      document.body.classList.remove("light-custom-theme");
+      document.body.classList.remove("third-theme");
+      document.body.classList.add("custom-theme");
+      this.themeColor = "blue"
+    } else if (themeColor == "third-theme") {
+      this.overlay.getContainerElement().classList.remove("custom-theme");
+      this.overlay.getContainerElement().classList.remove("light-custom-theme");
+      this.overlay.getContainerElement().classList.add("third-theme");
+      document.body.classList.remove("light-custom-theme");
+      document.body.classList.remove("custom-theme");
+      document.body.classList.add("third-theme");
+    }
+    localStorage.setItem("theme", themeColor);
+   
+  }
+
+  navigateToTrip(link) {
     this.router.navigate(['/' + link]);
+  }
+
+  getThemeColor() {
+    if(document.body.classList.contains("custom-theme")) {
+      this.fontThemeColor = 'white';
+      return '#B71C1C';
+    } else if (document.body.classList.contains("light-custom-theme")) {
+      this.fontThemeColor = 'white';
+      return '#303F9F';
+    } else if (document.body.classList.contains("third-theme")) {
+      
+      this.fontThemeColor = 'white';
+      return '#5E35B1';
+    }
+ 
+  }
+
+  getFontThemeColor() {
+    return this.fontThemeColor;
   }
 
   isAdmin() {
     return (this.AuthenticationService.isLoggedin() && this.AuthenticationService.getLoggedInUserId() == 1008) 
   }
-  title = 'app';
+
   isRtl() {
     return this.langService.isRtl();
   }

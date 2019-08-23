@@ -155,18 +155,17 @@
           <table class="table">
             <thead>
               <tr>
-                <th>{{ 'HOME.details' | translate }} </th>
+
                 <th>{{ 'HOME.fromDest' | translate }} </th>
                 <th>{{ 'HOME.toDest' | translate }} </th>
                 <th>{{ 'HOME.StartTime' | translate }} </th>
                 <th>{{ 'HOME.Status' | translate }} </th>
                 <th>{{ 'HOME.isArrived' | translate }} </th>
-
+                <th>{{ 'HOME.details' | translate }} </th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let T of user.trip">
-                <td><a [routerLink]="['/trip-details',T.id ]">{{T.id}}</a></td>
                 <td>{{T.fromDestination}}</td>
                 <td>{{T.toDestination}}</td>
                 <td>{{T.startTime}}</td>
@@ -176,6 +175,10 @@
                 <td *ngIf="T.status==4">{{ 'HOME.Deleted' | translate }}</td>
                 <td *ngIf="T.isArrived == true;else no">{{ 'HOME.yes' | translate }}</td>
                 <ng-template #no><td>{{ 'HOME.no' | translate }}</td></ng-template>
+                <td><button mat-raised-button color="primary" [routerLink]="['/trip-details',T.id ]">
+                  Details
+                  </button></td>
+
               </tr>
             </tbody>
           </table>
@@ -189,7 +192,7 @@
                 <th>{{ 'HOME.RequestDate' | translate }} </th>
                 <th>{{ 'HOME.PassengerNote' | translate }} </th>
                 <th>{{ 'HOME.Status' | translate }} </th>
-                <th>{{ 'HOME.PaymentMethod' | translate }} </th>
+                <th>{{ 'HOME.numberOfSeats' | translate }} </th>
               </tr>
             </thead>
             <tbody>
@@ -199,7 +202,7 @@
                 <td *ngIf="R.status==1">{{ 'HOME.New' | translate }}</td>
                 <td *ngIf="R.status==2">{{ 'HOME.Approved' | translate }}</td>
                 <td *ngIf="R.status==3">{{ 'HOME.Reject' | translate }}</td>
-                <td>{{getPaymentMethod(R.paymentMethod) }}</td>
+                <td>{{R.numberOfSeats }}</td>
               </tr>
             </tbody>
           </table>

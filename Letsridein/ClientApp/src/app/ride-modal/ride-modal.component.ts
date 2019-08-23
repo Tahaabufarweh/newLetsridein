@@ -23,7 +23,7 @@ export class RideModalComponent implements OnInit {
     
     passengerNote: new FormControl(''),
     status: new FormControl('', Validators.required),
-    paymentMethod: new FormControl('', Validators.required),
+    numberOfSeats: new FormControl('', Validators.required),
     
   })
   constructor(public translate: TranslateService,
@@ -42,18 +42,20 @@ export class RideModalComponent implements OnInit {
     return this.rideForm.get('passengerNote') as FormControl;
   }
 
+  get numberOfSeats() {
+    return this.rideForm.get('numberOfSeats') as FormControl;
+  }
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   createnewRide() {
-    let date = new Date();
     this.rideForm.setValue({
       passengerId: Number(this.AuthenticationService.getLoggedInUserId()),
       
       passengerNote: this.passengerNote.value,
-      status:1,
-      paymentMethod: 1,
+      status: 1,
+      numberOfSeats: this.numberOfSeats.value,
       
   });
 this.dialogRef.close(this.rideForm.value);

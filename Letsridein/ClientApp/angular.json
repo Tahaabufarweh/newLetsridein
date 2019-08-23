@@ -26,6 +26,7 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss",
+              "src/third-theme.scss",
               "src/custom-theme.scss",
               "src/light-custom-theme.scss"
             ],

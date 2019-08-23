@@ -16,9 +16,9 @@ namespace Letsridein.Controllers
     [ApiController]
     public class TripRequestsController : ControllerBase
     {
-        private readonly LetsRideinContext _context;
+        private readonly letsride_inContext _context;
 
-        public TripRequestsController(LetsRideinContext context)
+        public TripRequestsController(letsride_inContext context)
         {
             _context = context;
         }
@@ -107,19 +107,13 @@ namespace Letsridein.Controllers
                 List<TripRequest> list = _context.TripRequest.Where(request => request.TripId == NewTripRequest.TripId).ToList().ToList();
                 Trip TripObj = _context.Trip.Where(trip => trip.Id == NewTripRequest.TripId).FirstOrDefault();
                 DateTime tripDate = TripObj.StartDate;
-                TimeSpan time = TimeSpan.Parse(TripObj.StartTime);
-                tripDate = tripDate + time;
-                if (tripDate < DateTime.Now)
+                if (TripObj.StartDate < DateTime.Now.AddDays(1))
                 {
                     return BadRequest("This trip is expired!");
                 }
                 else if (list.Where(x => x.PassengerId == NewTripRequest.PassengerId).Count() > 0)
                 {
                     return BadRequest("Passenger exist in this trip!");
-                }
-                else if (list.Where(x => x.Status == (int)TripRequestStatus.Approved).Count() >= TripObj.SeatsNo)
-                {
-                    return BadRequest("Trip is full board!");
                 }
                 else
                 {
